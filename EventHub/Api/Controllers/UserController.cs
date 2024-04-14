@@ -1,89 +1,36 @@
-﻿using Api.Helpers;
-using Api.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+﻿using Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Shared.Entities;
 
 namespace Api.Controllers
 {
-	/// <summary>
-	/// Controller for managing user-related operations.
-	/// </summary>
-	[Authorize]
 	[Route("[controller]")]
 	[ApiController]
-	public class UserController : ControllerBase
+	public class UserController : Controller
 	{
-		private readonly IUserService _userService;
+		private readonly DataContext _context;
 
-		public UserController(IUserService userService)
+		public UserController(DataContext context)
 		{
-			_userService = userService;
+			_context = context;
 		}
 
-		/// <summary>
-		/// Retrieves all users from the database.
-		/// </summary>
-		/// <returns>A collection of all users.</returns>
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+		public async Task<ActionResult<List<User>>> GetUsers()
 		{
-			var users = await _userService.GetAllUsersAsync();
+			var users = await _context.Users.ToListAsync();
 			return Ok(users);
 		}
 
-		/// <summary>
-		/// Retrieves a user by their ID from the database.
-		/// </summary>
-		/// <param name="id">The ID of the user to retrieve.</param>
-		/// <returns>The user object if found, null otherwise.</returns>
 		[HttpGet("{id}")]
-		public async Task<ActionResult<User>> GetUser(int id)
+		public async Task<ActionResult<User>> GetUser(string id)
 		{
-			var user = await _userService.GetUserByIdAsync(id);
+			var user = await _context.Users.FindAsync(id);
 			if (user == null)
-			{
-				return NotFound("User was not found");
-			}
+				return NotFound("User not found");
+
 			return Ok(user);
-		}
-
-		/// <summary>
-		/// Adds a new user to the database.
-		/// </summary>
-		/// <param name="user">The user object to add.</param>
-		/// <returns>A collection of all users after adding the new user.</returns>
-		[HttpPost]
-		public async Task<ActionResult<IEnumerable<User>>> AddUser(User user)
-		{
-			string hashedPassword = PasswordHasher.HashPassword(user.PasswordHash);
-			user.PasswordHash = hashedPassword;
-
-			var users = await _userService.AddUserAsync(user);
-			return Ok(users);
-		}
-
-		/// <summary>
-		/// Updates an existing user in the database.
-		/// </summary>
-		/// <param name="user">The updated user object.</param>
-		/// <returns>A collection of all users after updating the user.</returns>
-		[HttpPut]
-		public async Task<ActionResult<IEnumerable<User>>> UpdateUser(User user)
-		{
-			var users = await _userService.UpdateUserAsync(user);
-			return Ok(users);
-		}
-
-		/// <summary>
-		/// Deletes a user from the database by their ID.
-		/// </summary>
-		/// <param name="id">The ID of the user to delete.</param>
-		/// <returns>A collection of all users after deleting the user.</returns>
-		[HttpDelete("{id}")]
-		public async Task<ActionResult<IEnumerable<User>>> DeleteUser(int id)
-		{
-			var users = await _userService.DeleteUserAsync(id);
-			return Ok(users);
 		}
 	}
 }

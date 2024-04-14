@@ -1,40 +1,36 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
+using Shared.Entities;
+using Shared.Models;
 
 namespace Api.Controllers
 {
-	[Route("[controller]")]
-	[ApiController]
-	public class AuthController : ControllerBase
+	public class AuthController : Controller
 	{
-		private readonly IConfiguration _config;
+		private readonly UserManager<User> _userManager;
 
-		public AuthController(IConfiguration configuration)
+		public AuthController(UserManager<User> userManager)
 		{
-			_config = configuration;
+			_userManager = userManager;
 		}
 
-		[HttpPost]
-		public IActionResult Post([FromBody] LoginRequest loginRequest)
+		[HttpPost("registerUser")]
+		public async Task<IActionResult> Register(RegisterModel model)
 		{
-			//your logic for login process
-			//If login usrename and password are correct then proceed to generate token
+			var user = new User
+			{
+				FirstName = model.FirstName,
+				LastName = model.LastName,
+				Email = model.Email,
+				UserName = model.Email,
+				PasswordHash = model.Password
+			};
 
-			var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-			var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+			var result = await _userManager.CreateAsync(user, user.PasswordHash!);
+			if (result.Succeeded)
+				return Ok("Registration made successfully");
 
-			var Sectoken = new JwtSecurityToken(_config["Jwt:Issuer"],
-			  _config["Jwt:Issuer"],
-			  null,
-			  expires: DateTime.Now.AddMinutes(120),
-			  signingCredentials: credentials);
-
-			var token = new JwtSecurityTokenHandler().WriteToken(Sectoken);
-
-			return Ok(token);
+			return BadRequest(result);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace Shared.Models
+﻿namespace Shared.Entities
 {
 	public class Review
 	{
@@ -6,7 +6,7 @@
 		public int EventId { get; set; }
 		public int UserId { get; set; }
 		public float Rating { get; set; }
-		public string ReviewText { get; set; }
+		public string? ReviewText { get; set; }
 		public DateTime ReviewDate { get; set; }
 		public User User { get; set; }
 		public Event Event { get; set; }
