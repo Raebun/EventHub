@@ -29,6 +29,7 @@ builder.Services.AddIdentityApiEndpoints<User>()
 builder.Services.AddDataAccess(builder.Configuration);
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IEventService, EventService>();
 
 var app = builder.Build();
 

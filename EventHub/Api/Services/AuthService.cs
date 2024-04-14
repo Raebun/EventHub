@@ -29,8 +29,15 @@ namespace Api.Services
 				PasswordHash = model.Password
 			};
 
-			var result = await _userManager.CreateAsync(user, user.PasswordHash);
-			return result.Succeeded;
+			if (user.PasswordHash != null)
+			{
+				var result = await _userManager.CreateAsync(user, user.PasswordHash);
+				return result.Succeeded;
+			}
+			else
+			{
+				return false;
+			}
 		}
 	}
 }
