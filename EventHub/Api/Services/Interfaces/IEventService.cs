@@ -9,6 +9,13 @@ namespace Api.Services.Interfaces
 	public interface IEventService
 	{
 		/// <summary>
+		/// Checks if an event with the specified ID exists.
+		/// </summary>
+		/// <param name="id">The ID of the event to check.</param>
+		/// <returns>True if the event exists, otherwise false.</returns>
+		Task<bool> EventExistsAsync(int id);
+
+		/// <summary>
 		/// Retrieves all events asynchronously.
 		/// </summary>
 		/// <returns>The list of events.</returns>
@@ -28,5 +35,19 @@ namespace Api.Services.Interfaces
 		/// <returns>The newly created event.</returns>
 		Task<Event> CreateEventAsync(EventCreateModel model);
 
+		/// <summary>
+		/// Updates an existing event.
+		/// </summary>
+		/// <param name="id">The ID of the event to update.</param>
+		/// <param name="model">The event update model.</param>
+		/// <returns>The updated event if successful, otherwise null.</returns>
+		Task<Event> UpdateEventAsync(int id, EventUpdateModel model);
+
+		/// <summary>
+		/// Deletes an event by ID.
+		/// </summary>
+		/// <param name="id">The ID of the event to delete.</param>
+		/// <returns>True if the event was deleted successfully, otherwise false.</returns>
+		Task<bool> DeleteEventAsync(int id);
 	}
 }

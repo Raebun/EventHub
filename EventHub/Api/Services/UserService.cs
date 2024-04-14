@@ -26,7 +26,13 @@ namespace Api.Services
 		/// <inheritdoc />
 		public async Task<User> GetUserByIdAsync(string id)
 		{
-			return await _context.Users.FindAsync(id);
+			var user = await _context.Users.FindAsync(id);
+
+			if (user == null)
+				throw new Exception("User not found");
+			
+
+			return user;
 		}
 	}
 }

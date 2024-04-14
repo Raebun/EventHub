@@ -18,6 +18,12 @@ namespace Api.Services
 			_context = context;
 		}
 
+		public async Task<bool> EventExistsAsync(int id)
+		{
+			// Check if there's any event with the given ID
+			return await _context.Events.AnyAsync(e => e.EventId == id);
+		}
+
 		/// <inheritdoc />
 		public async Task<List<Event>> GetEventsAsync()
 		{
@@ -27,7 +33,13 @@ namespace Api.Services
 		/// <inheritdoc />
 		public async Task<Event> GetEventByIdAsync(int id)
 		{
-			return await _context.Events.FindAsync(id);
+			var eventItem = await _context.Events.FindAsync(id);
+
+			if (eventItem == null)
+				throw new Exception("Event not found");
+
+
+			return eventItem;
 		}
 
 		/// <inheritdoc />
@@ -47,6 +59,39 @@ namespace Api.Services
 			await _context.SaveChangesAsync();
 
 			return newEvent;
+		}
+
+		/// <inheritdoc />
+		public async Task<Event> UpdateEventAsync(int id, EventUpdateModel model)
+		{
+			var existingEvent = await _context.Events.FindAsync(id);
+
+			if (existingEvent == null)
+				throw new Exception("Event not found");
+			
+			existingEvent.EventName = model.EventName;
+			existingEvent.EventDescription = model.EventDescription;
+			existingEvent.EventDate = model.EventDate ?? existingEvent.EventDate;
+			existingEvent.Location = model.Location;
+			existingEvent.TicketPrice = model.TicketPrice ?? existingEvent.TicketPrice;
+
+			await _context.SaveChangesAsync();
+
+			return existingEvent;
+		}
+
+		/// <inheritdoc />
+		public async Task<bool> DeleteEventAsync(int id)
+		{
+			var existingEvent = await _context.Events.FindAsync(id);
+
+			if (existingEvent == null)
+				return false;
+
+			_context.Events.Remove(existingEvent);
+			await _context.SaveChangesAsync();
+
+			return true;
 		}
 	}
 }

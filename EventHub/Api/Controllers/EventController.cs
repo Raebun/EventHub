@@ -56,5 +56,47 @@ namespace Api.Controllers
 			var createdEvent = await _eventService.CreateEventAsync(model);
 			return CreatedAtAction(nameof(GetEvent), new { id = createdEvent.EventId }, createdEvent);
 		}
+
+		/// <summary>
+		/// Updates an existing event.
+		/// </summary>
+		/// <param name="id">The ID of the event to update.</param>
+		/// <param name="model">The event update model.</param>
+		/// <returns>The updated event if successful, otherwise returns NotFoundResult.</returns>
+		[HttpPut("{id}")]
+		public async Task<IActionResult> UpdateEvent(int id, EventUpdateModel model)
+		{
+			var updatedEvent = await _eventService.UpdateEventAsync(id, model);
+
+			if (updatedEvent == null)
+				return NotFound("Event not found");
+
+			return Ok(updatedEvent);
+		}
+
+		/// <summary>
+		/// Deletes an event by ID.
+		/// </summary>
+		/// <param name="id">The ID of the event to delete.</param>
+		/// <returns>Returns a message indicating the status of the deletion.</returns>
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> DeleteEvent(int id)
+		{
+			var eventExists = await _eventService.EventExistsAsync(id);
+			if (!eventExists)
+			{
+				return NotFound($"Event with ID {id} not found");
+			}
+
+			var result = await _eventService.DeleteEventAsync(id);
+			if (result)
+			{
+				return Ok("Event has been successfully deleted");
+			}
+			else
+			{
+				return BadRequest("Event could not be removed");
+			}
+		}
 	}
 }
