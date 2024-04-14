@@ -1,6 +1,5 @@
-﻿using Data;
+﻿using Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Shared.Entities;
 
 namespace Api.Controllers
@@ -9,24 +8,33 @@ namespace Api.Controllers
 	[ApiController]
 	public class UserController : Controller
 	{
-		private readonly DataContext _context;
+		private readonly IUserService _userService;
 
-		public UserController(DataContext context)
+		public UserController(IUserService userService)
 		{
-			_context = context;
+			_userService = userService;
 		}
 
+		/// <summary>
+		/// Retrieves all users.
+		/// </summary>
+		/// <returns>The list of users.</returns>
 		[HttpGet]
 		public async Task<ActionResult<List<User>>> GetUsers()
 		{
-			var users = await _context.Users.ToListAsync();
+			var users = await _userService.GetUsersAsync();
 			return Ok(users);
 		}
 
+		/// <summary>
+		/// Retrieves a user by ID.
+		/// </summary>
+		/// <param name="id">The ID of the user.</param>
+		/// <returns>The user object if found, otherwise returns NotFoundResult.</returns>
 		[HttpGet("{id}")]
 		public async Task<ActionResult<User>> GetUser(string id)
 		{
-			var user = await _context.Users.FindAsync(id);
+			var user = await _userService.GetUserByIdAsync(id);
 			if (user == null)
 				return NotFound("User not found");
 

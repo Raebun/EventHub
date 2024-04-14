@@ -1,3 +1,5 @@
+using Api.Services.Interfaces;
+using Api.Services;
 using Data;
 using Microsoft.OpenApi.Models;
 using Shared.Entities;
@@ -25,7 +27,8 @@ builder.Services.AddIdentityApiEndpoints<User>()
 	.AddEntityFrameworkStores<DataContext>();
 
 builder.Services.AddDataAccess(builder.Configuration);
-
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 

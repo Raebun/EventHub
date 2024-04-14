@@ -1,36 +1,33 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Entities;
 using Shared.Models;
 
 namespace Api.Controllers
 {
-	public class AuthController : Controller
+	[Route("[controller]")]
+	[ApiController]
+	public class AuthController : ControllerBase
 	{
-		private readonly UserManager<User> _userManager;
+		private readonly IAuthService _authService;
 
-		public AuthController(UserManager<User> userManager)
+		public AuthController(IAuthService authService)
 		{
-			_userManager = userManager;
+			_authService = authService;
 		}
 
+		/// <summary>
+		/// Registers a new user.
+		/// </summary>
+		/// <param name="model">The registration model.</param>
+		/// <returns>Ok if registration is successful, otherwise BadRequest.</returns>
 		[HttpPost("registerUser")]
 		public async Task<IActionResult> Register(RegisterModel model)
 		{
-			var user = new User
-			{
-				FirstName = model.FirstName,
-				LastName = model.LastName,
-				Email = model.Email,
-				UserName = model.Email,
-				PasswordHash = model.Password
-			};
-
-			var result = await _userManager.CreateAsync(user, user.PasswordHash!);
-			if (result.Succeeded)
+			var success = await _authService.RegisterUserAsync(model);
+			if (success)
 				return Ok("Registration made successfully");
-
-			return BadRequest(result);
+			else
+				return BadRequest("Registration failed");
 		}
 	}
 }
