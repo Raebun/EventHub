@@ -33,13 +33,7 @@ namespace Api.Services
 		/// <inheritdoc />
 		public async Task<Event> GetEventByIdAsync(int id)
 		{
-			var eventItem = await _context.Events.FindAsync(id);
-
-			if (eventItem == null)
-				throw new Exception("Event not found");
-
-
-			return eventItem;
+			return await _context.Events.FindAsync(id);
 		}
 
 		/// <inheritdoc />
