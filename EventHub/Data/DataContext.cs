@@ -4,7 +4,7 @@ using Shared.Entities;
 
 namespace Data
 {
-	public class DataContext : IdentityDbContext<User>
+    public class DataContext : IdentityDbContext<User>
 	{
 		public DataContext(DbContextOptions<DataContext> options) : base(options)
 		{
@@ -14,5 +14,10 @@ namespace Data
 		public DbSet<Favorite> Favorites { get; set; }
 		public DbSet<Ticket> Tickets { get; set; }
 		public DbSet<Review> Reviews { get; set; }
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
+		}
 	}
 }

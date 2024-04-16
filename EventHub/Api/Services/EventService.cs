@@ -20,7 +20,6 @@ namespace Api.Services
 
 		public async Task<bool> EventExistsAsync(int id)
 		{
-			// Check if there's any event with the given ID
 			return await _context.Events.AnyAsync(e => e.EventId == id);
 		}
 

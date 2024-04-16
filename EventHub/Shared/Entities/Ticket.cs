@@ -1,4 +1,6 @@
-﻿namespace Shared.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Shared.Entities
 {
 	public class Ticket
 	{
