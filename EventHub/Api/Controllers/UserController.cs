@@ -1,9 +1,12 @@
 ﻿using Api.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Entities;
+using System.Security.Claims;
 
 namespace Api.Controllers
 {
+	[Authorize]
 	[Route("[controller]")]
 	[ApiController]
 	public class UserController : Controller
@@ -35,6 +38,24 @@ namespace Api.Controllers
 		public async Task<ActionResult<User>> GetUser(string id)
 		{
 			var user = await _userService.GetUserByIdAsync(id);
+			if (user == null)
+				return NotFound("User not found");
+
+			return Ok(user);
+		}
+
+		/// <summary>
+		/// Retrieves the authenticated user.
+		/// </summary>
+		/// <returns>The authenticated user.</returns>
+		[HttpGet("me")]
+		public async Task<ActionResult<User>> GetCurrentUser()
+		{
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			if (string.IsNullOrEmpty(userId))
+				return NotFound("User not found");
+
+			var user = await _userService.GetUserByIdAsync(userId);
 			if (user == null)
 				return NotFound("User not found");
 

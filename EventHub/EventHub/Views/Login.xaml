@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:viewmodel="clr-namespace:EventHub.ViewModels"
+			 x:DataType="viewmodel:LoginViewModel"
+             x:Class="EventHub.Views.Login"
+             Title="Login"
+			 Shell.NavBarIsVisible="False">
+
+	<StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand">
+		<!-- Title -->
+		<Label Text="Login" FontSize="Title" Margin="0,20,0,0" />
+
+		<BoxView HeightRequest="20" BackgroundColor="Transparent" />
+
+		<!-- Email input -->
+		<Border 
+				StrokeThickness="0"
+				BackgroundColor="White"
+				StrokeShape="RoundRectangle 10,10,10,10"
+				Padding="10">
+			<Entry Text="{Binding Email}" Placeholder="Email" />
+		</Border>
+		
+		<BoxView HeightRequest="20" BackgroundColor="Transparent" />
+
+		<!-- Password input -->
+		<Border 
+				StrokeThickness="0"
+				BackgroundColor="White"
+				StrokeShape="RoundRectangle 10,10,10,10"
+				Padding="10">
+			<Entry Text="{Binding Password}"  Placeholder="Password" IsPassword="True" />
+		</Border>
+
+		<Label Text="{Binding ErrorMessage}" TextColor="Red" />
+
+		<!-- Login button -->
+		<Button x:Name="loginBtn" Clicked="BtnClicked" Command="{Binding SignInCommand}" Text="Login" Margin="0,20" />
+
+		<Label Text="Sign up" TextColor="Blue" Margin="0,20" HorizontalOptions="Center" VerticalOptions="EndAndExpand">
+			<Label.GestureRecognizers>
+				<TapGestureRecognizer Tapped="SignUpTapped" />
+			</Label.GestureRecognizers>
+		</Label>
+	</StackLayout>
+</ContentPage>

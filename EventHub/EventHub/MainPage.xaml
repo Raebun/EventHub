@@ -4,10 +4,10 @@
              x:Class="EventHub.MainPage">
 
     <ScrollView>
-        <VerticalStackLayout
+		<VerticalStackLayout
             Padding="30,0"
             Spacing="25">
-            <Image
+			<Image
                 Source="dotnet_bot.png"
                 HeightRequest="185"
                 Aspect="AspectFit"

@@ -3,13 +3,36 @@
     x:Class="EventHub.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:EventHub"
+    xmlns:local="clr-namespace:EventHub.Views"
     Shell.FlyoutBehavior="Disabled"
     Title="EventHub">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+	<FlyoutItem Title="Login">
+		<ShellContent
+            ContentTemplate="{DataTemplate local:Login}"
+            Route="Login" />
+	</FlyoutItem>
 
+	<TabBar>
+		<ShellContent
+			Icon="home.png"
+            ContentTemplate="{DataTemplate local:Home}"
+            Route="Home" />
+
+		<ShellContent
+			Icon="ticket.png"
+            ContentTemplate="{DataTemplate local:Tickets}"
+            Route="Tickets" />
+
+		<ShellContent
+			Icon="heart.png"
+            ContentTemplate="{DataTemplate local:Favorites}"
+            Route="Favorites" />
+
+		<ShellContent
+			Icon="account.png"
+            ContentTemplate="{DataTemplate local:Settings}"
+            Route="Settings" />
+
+	</TabBar>
 </Shell>

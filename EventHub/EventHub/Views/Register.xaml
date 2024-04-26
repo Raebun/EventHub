@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:viewmodel="clr-namespace:EventHub.ViewModels"
+			 x:DataType="viewmodel:RegisterViewModel"
+             x:Class="EventHub.Views.Register"
+             Title="Register"
+             Shell.NavBarIsVisible="False">
+
+	<Grid>
+		<!-- Back button -->
+		<Label Text="Back" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Grey" Margin="10,10,0,0">
+			<Label.GestureRecognizers>
+				<TapGestureRecognizer Tapped="BackButtonClicked" />
+			</Label.GestureRecognizers>
+		</Label>
+
+		<StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" Spacing="20" Margin="0,30,0,0">
+			<!-- Title -->
+			<Label Text="Register" HorizontalOptions="Center" FontSize="Title" />
+
+			<!-- Firstname input -->
+			<Border 
+                StrokeThickness="0"
+                BackgroundColor="White"
+                StrokeShape="RoundRectangle 10,10,10,10"
+                Padding="10">
+				<Entry Text="{Binding FirstName}" Placeholder="Firstname" BackgroundColor="White" />
+			</Border>
+
+			<!-- Lastname input -->
+			<Border 
+                StrokeThickness="0"
+                BackgroundColor="White"
+                StrokeShape="RoundRectangle 10,10,10,10"
+                Padding="10">
+				<Entry Text="{Binding LastName}" Placeholder="Lastname" BackgroundColor="White" />
+			</Border>
+
+			<!-- Email input -->
+			<Border 
+                StrokeThickness="0"
+                BackgroundColor="White"
+                StrokeShape="RoundRectangle 10,10,10,10"
+                Padding="10">
+				<Entry Text="{Binding Email}" Placeholder="Email" Keyboard="Email" BackgroundColor="White" />
+			</Border>
+
+			<!-- Password input -->
+			<Border 
+                StrokeThickness="0"
+                BackgroundColor="White"
+                StrokeShape="RoundRectangle 10,10,10,10"
+                Padding="10">
+				<Entry Text="{Binding Password}" Placeholder="Password" IsPassword="True" BackgroundColor="White" />
+			</Border>
+
+			<!-- Register button -->
+			<Button x:Name="registerBtn" Command="{Binding RegisterCommand}" Text="Register" Margin="0,20" />
+		</StackLayout>
+	</Grid>
+</ContentPage>

@@ -2,6 +2,7 @@
 using Data;
 using Microsoft.EntityFrameworkCore;
 using Shared.Entities;
+using System.Security.Claims;
 
 namespace Api.Services
 {
@@ -11,11 +12,14 @@ namespace Api.Services
 	public class UserService : IUserService
 	{
 		private readonly DataContext _context;
+		private readonly IHttpContextAccessor _httpContextAccessor;
 
-		public UserService(DataContext context)
-		{
-			_context = context;
-		}
+public UserService(DataContext context, IHttpContextAccessor httpContextAccessor)
+        {
+            _context = context;
+            _httpContextAccessor = httpContextAccessor;
+        }
+
 
 		/// <inheritdoc />
 		public async Task<List<User>> GetUsersAsync()
