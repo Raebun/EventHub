@@ -148,5 +148,11 @@
 				</Frame>
 			</Grid>
 		</Grid>
+		<Button 
+			Text="Logout"
+			Command="{Binding LogoutCommand}"
+			CommandParameter="{Binding Source={x:Reference Page}}"
+			VerticalOptions="CenterAndExpand"
+			HorizontalOptions="CenterAndExpand" />
 	</StackLayout>
 </ContentPage>

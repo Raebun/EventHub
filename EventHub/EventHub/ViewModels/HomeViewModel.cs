@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using EventHub.Views;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using System.Windows.Input;
 
 namespace EventHub.ViewModels
 {
@@ -9,6 +11,8 @@ namespace EventHub.ViewModels
 		private string? _fullName;
 
 		private readonly HttpClient _httpClient;
+		public ICommand LogoutCommand { get; }
+
 
 		public string FullName
 		{
@@ -19,6 +23,16 @@ namespace EventHub.ViewModels
 		public HomeViewModel(HttpClient httpClient)
 		{
 			_httpClient = httpClient;
+			LogoutCommand = new Command(async () => await LogoutAsync());
+		}
+
+		private async Task LogoutAsync()
+		{
+			SecureStorage.Remove("auth_token");
+			SecureStorage.Remove("user_id");
+
+			// Navigate back to the login page
+			await Shell.Current.Navigation.PushAsync(new Login());
 		}
 
 		public async Task UpdateUserInfoAsync()

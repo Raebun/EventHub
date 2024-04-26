@@ -7,7 +7,11 @@
     Shell.FlyoutBehavior="Disabled"
     Title="EventHub">
 
-	<FlyoutItem Title="Login">
+	<FlyoutItem>
+		<ShellContent
+            ContentTemplate="{DataTemplate local:Loading}"
+            Route="Loading" />
+
 		<ShellContent
             ContentTemplate="{DataTemplate local:Login}"
             Route="Login" />

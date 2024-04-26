@@ -22,13 +22,13 @@ public partial class Login : ContentPage
 	protected override void OnDisappearing()
 	{
 		base.OnDisappearing();
-		if (BindingContext is ViewModels.LoginViewModel viewModel)
+		if (BindingContext is LoginViewModel viewModel)
 		{
 			viewModel.LoginSuccess -= OnLoginSuccess;
 		}
 	}
 
-	protected override async void OnAppearing()
+/*	protected override async void OnAppearing()
 	{
 		base.OnAppearing();
 
@@ -38,7 +38,7 @@ public partial class Login : ContentPage
 		{
 			await Navigation.PushAsync(new Home());
 		}
-	}
+	}*/
 
 	private async void OnLoginSuccess(object sender, EventArgs e)
 	{
