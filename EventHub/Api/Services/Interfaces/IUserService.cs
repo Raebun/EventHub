@@ -1,4 +1,5 @@
 ﻿using Shared.Entities;
+using Shared.Models;
 
 namespace Api.Services.Interfaces
 {
@@ -19,5 +20,6 @@ namespace Api.Services.Interfaces
 		/// <param name="id">The ID of the user.</param>
 		/// <returns>The user object if found, otherwise null.</returns>
 		Task<User> GetUserByIdAsync(string id);
+		Task UpdateUserAsync(string id, UserUpdate updatedUser);
 	}
 }

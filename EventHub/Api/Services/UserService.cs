@@ -2,7 +2,7 @@
 using Data;
 using Microsoft.EntityFrameworkCore;
 using Shared.Entities;
-using System.Security.Claims;
+using Shared.Models;
 
 namespace Api.Services
 {
@@ -14,7 +14,7 @@ namespace Api.Services
 		private readonly DataContext _context;
 		private readonly IHttpContextAccessor _httpContextAccessor;
 
-public UserService(DataContext context, IHttpContextAccessor httpContextAccessor)
+		public UserService(DataContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
@@ -31,6 +31,25 @@ public UserService(DataContext context, IHttpContextAccessor httpContextAccessor
 		public async Task<User> GetUserByIdAsync(string id)
 		{
 			return await _context.Users.FindAsync(id);
+		}
+
+		public async Task UpdateUserAsync(string id, UserUpdate updatedUser)
+		{
+			var existingUser = await _context.Users.FindAsync(id);
+			if (existingUser == null)
+				throw new ArgumentException("User not found.");
+
+			existingUser.FirstName = updatedUser.Firstname;
+			existingUser.LastName = updatedUser.Lastname;
+			existingUser.Email = updatedUser.Email;
+
+			// Update password only if it's not empty
+			if (!string.IsNullOrEmpty(updatedUser.Password))
+			{
+				existingUser.PasswordHash = updatedUser.Password;
+			}
+
+			await _context.SaveChangesAsync();
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Entities;
+using Shared.Models;
 using System.Security.Claims;
 
 namespace Api.Controllers
@@ -60,6 +61,25 @@ namespace Api.Controllers
 				return NotFound("User not found");
 
 			return Ok(user);
+		}
+
+
+		[HttpPut("{id}")]
+		public async Task<IActionResult> UpdateUser(string id, [FromBody] UserUpdate updatedUser)
+		{
+			try
+			{
+				await _userService.UpdateUserAsync(id, updatedUser);
+				return Ok("User updated successfully.");
+			}
+			catch (ArgumentException ex)
+			{
+				return NotFound(ex.Message);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, $"An error occurred: {ex.Message}");
+			}
 		}
 	}
 }
