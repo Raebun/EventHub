@@ -1,5 +1,6 @@
 ﻿using Api.Services.Interfaces;
 using Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Shared.Entities;
 using Shared.Models;
@@ -13,12 +14,14 @@ namespace Api.Services
 	{
 		private readonly DataContext _context;
 		private readonly IHttpContextAccessor _httpContextAccessor;
+		private readonly UserManager<User> _userManager;
 
-		public UserService(DataContext context, IHttpContextAccessor httpContextAccessor)
-        {
-            _context = context;
-            _httpContextAccessor = httpContextAccessor;
-        }
+		public UserService(DataContext context, IHttpContextAccessor httpContextAccessor, UserManager<User> userManager)
+		{
+			_context = context;
+			_httpContextAccessor = httpContextAccessor;
+			_userManager = userManager;
+		}
 
 
 		/// <inheritdoc />
@@ -46,7 +49,8 @@ namespace Api.Services
 			// Update password only if it's not empty
 			if (!string.IsNullOrEmpty(updatedUser.Password))
 			{
-				existingUser.PasswordHash = updatedUser.Password;
+				var hashedPassword = _userManager.PasswordHasher.HashPassword(existingUser, updatedUser.Password);
+				existingUser.PasswordHash = hashedPassword;
 			}
 
 			await _context.SaveChangesAsync();

@@ -6,6 +6,7 @@ namespace EventHub.ViewModels;
 public class BaseViewModel : INotifyPropertyChanged
 {
 	public event PropertyChangedEventHandler PropertyChanged;
+
 	protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
 	{
 		var changed = PropertyChanged;

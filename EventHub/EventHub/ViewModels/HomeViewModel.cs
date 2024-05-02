@@ -13,8 +13,6 @@ public class HomeViewModel : ObservableObject
 
 	public ObservableCollection<Events> EventItems { get; set; } = [];
 	private string? _fullName;
-
-	public ICommand LogoutCommand { get; }
 	public ICommand SelectEventCommand { get; set; }
 
 
@@ -27,18 +25,9 @@ public class HomeViewModel : ObservableObject
 	public HomeViewModel(IEventService service)
 	{
 		_eventService = service;
-		LogoutCommand = new Command(async () => await LogoutAsync());
 		SelectEventCommand = new Command<Events>(async (eventItem) => await SelectionChanged(eventItem));
 		_ = LoadEventsAsync();
 		_ = UpdateUserInfoAsync();
-	}
-
-	private async Task LogoutAsync()
-	{
-		SecureStorage.Remove("auth_token");
-		SecureStorage.Remove("user_id");
-
-		await Shell.Current.Navigation.PushAsync(new Login());
 	}
 
 	public async Task UpdateUserInfoAsync()

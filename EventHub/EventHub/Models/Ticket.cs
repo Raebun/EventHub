@@ -7,4 +7,5 @@ public class Ticket
 	public string LastName { get; set; }
 	public DateTime PurchaseDate { get; set; }
 	public Events Event { get; set; }
+	public string FullName => $"{FirstName} {LastName}";
 }

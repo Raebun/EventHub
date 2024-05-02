@@ -1,9 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using EventHub.Models;
 using EventHub.Services.Interfaces;
-using QRCoder;
 using System.Collections.ObjectModel;
-using static QRCoder.QRCodeGenerator;
 
 namespace EventHub.ViewModels;
 

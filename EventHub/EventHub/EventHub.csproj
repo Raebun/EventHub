@@ -68,9 +68,11 @@
 	<ItemGroup>
 	  <None Remove="Resources\Fonts\Inter-Regular.ttf" />
 	  <None Remove="Resources\Fonts\Inter-SemiBold.ttf" />
+	  <None Remove="Resources\Images\chevron_right_solid.svg" />
 	  <None Remove="Resources\Images\event1.jpg" />
 	  <None Remove="Resources\Images\event2.jpg" />
 	  <None Remove="Resources\Images\event3.jpg" />
+	  <None Remove="Resources\Images\placeholder_image.jpg" />
 	  <None Remove="Resources\Images\profile_picture.JPG" />
 	</ItemGroup>
 
@@ -90,6 +92,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Shared\Shared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Views\EventDetail.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -106,6 +112,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Order.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Profile.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Register.xaml">
