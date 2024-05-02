@@ -2,9 +2,9 @@ using EventHub.ViewModels;
 
 namespace EventHub.Views;
 
-public partial class Settings : ContentPage
+public partial class Profile : ContentPage
 {
-	public Settings(SettingsViewModel viewModel)
+	public Profile(UserViewModel viewModel)
 	{
 		InitializeComponent();
 		BindingContext = viewModel;

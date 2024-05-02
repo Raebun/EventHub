@@ -8,21 +8,21 @@
              Title="Order tickets">
 	<StackLayout Margin="20">
 		<Label Text="{Binding EventItem.EventName}" FontSize="Large" HorizontalOptions="Center" />
-		<Label Text="{Binding EventItem.EventId}" FontSize="Large" HorizontalOptions="Center" />
 		<Label Text="Select number of tickets:" />
 		<Entry Text="{Binding NumberOfTickets}" Placeholder="Enter number of tickets" />
-		<Button Text="Confirm" Command="{Binding ConfirmCommand}" />
 
 		<!-- Dynamic input fields for first and last names -->
 		<StackLayout BindableLayout.ItemsSource="{Binding TicketHolders}">
 			<BindableLayout.ItemTemplate>
 				<DataTemplate x:DataType="models:TicketHolder">
-					<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+					<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="0,10,0,10">
 						<Entry Placeholder="First Name" Text="{Binding FirstName}" HorizontalOptions="FillAndExpand" />
 						<Entry Placeholder="Last Name" Text="{Binding LastName}" HorizontalOptions="FillAndExpand" />
 					</StackLayout>
 				</DataTemplate>
 			</BindableLayout.ItemTemplate>
 		</StackLayout>
+
+		<Button Text="Confirm" Command="{Binding ConfirmCommand}" />
 	</StackLayout>
 </ContentPage>

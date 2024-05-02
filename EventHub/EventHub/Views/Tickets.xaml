@@ -3,44 +3,48 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:EventHub.ViewModels"
              xmlns:models="clr-namespace:EventHub.Models"
-			 xmlns:cv="clr-namespace:Camera.MAUI;assembly=Camera.MAUI"
+             xmlns:cv="clr-namespace:Camera.MAUI;assembly=Camera.MAUI"
              x:Class="EventHub.Views.Tickets"
              x:DataType="viewmodel:TicketViewModel"
              Title="Tickets">
 	<ContentPage.Resources>
 		<Style TargetType="Frame">
-			<Setter Property="BackgroundColor" Value="#F0F0F0" />
+			<Setter Property="BackgroundColor" Value="White" />
 			<Setter Property="Margin" Value="10" />
 			<Setter Property="CornerRadius" Value="10" />
 			<Setter Property="Padding" Value="10" />
 		</Style>
-		<Style TargetType="Label">
-			<Setter Property="TextColor" Value="#333333" />
-			<Setter Property="FontSize" Value="18" />
+		<Style TargetType="Label" x:Key="TicketLabel">
+			<Setter Property="FontSize" Value="16" />
+			<Setter Property="VerticalOptions" Value="CenterAndExpand" />
+		</Style>
+		<Style TargetType="Label" x:Key="EventNameLabel" BasedOn="{StaticResource TicketLabel}">
 			<Setter Property="FontAttributes" Value="Bold" />
 		</Style>
+		<Style TargetType="Label" x:Key="EventDateLabel" BasedOn="{StaticResource TicketLabel}">
+			<Setter Property="FontSize" Value="14" />
+			<Setter Property="TextColor" Value="#666666" />
+		</Style>
 	</ContentPage.Resources>
-	
+
 	<CollectionView x:Name="collectionView"
                     Margin="20"
                     ItemsSource="{Binding TicketItems}">
 		<CollectionView.ItemTemplate>
 			<DataTemplate x:DataType="models:Ticket">
 				<Frame Padding="20,10"
-                       HasShadow="False">
-					<Grid ColumnDefinitions="0.9*, 0.1*">
+                       HasShadow="True">
+					<Grid ColumnDefinitions="0.7*, 0.3*">
 						<StackLayout Grid.Column="0" Spacing="5">
 							<Label Text="{Binding Event.EventName}" 
-                                   VerticalOptions="CenterAndExpand" />
-							<Label Text="{Binding FirstName}" 
-                                   VerticalOptions="CenterAndExpand" />
+                                   Style="{StaticResource EventNameLabel}" />
+							<Label Text="{Binding FullName}" 
+                                   Style="{StaticResource TicketLabel}" />
+							<Label Text="{Binding Event.EventDate, StringFormat='{0:dd/MM/yyyy HH:mm}'}" 
+                                   Style="{StaticResource EventDateLabel}" />
+							<Label Text="{Binding Event.Location}" 
+                                   Style="{StaticResource TicketLabel}" />
 						</StackLayout>
-
-						<Image Grid.Column="1"
-                               Source="ticket_icon.png"
-                               Aspect="AspectFit"
-                               VerticalOptions="Center"
-                               HorizontalOptions="End" />
 					</Grid>
 				</Frame>
 			</DataTemplate>
