@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 			 xmlns:viewmodel="clr-namespace:EventHub.ViewModels"
+			 xmlns:models="clr-namespace:EventHub.Models"
              x:Class="EventHub.Views.Home"
 			 x:DataType="viewmodel:HomeViewModel"
              Title="Home"
@@ -107,47 +108,25 @@
 
 		<BoxView HeightRequest="50" BackgroundColor="Transparent" />
 
-		<Grid
-            Grid.Row="3"
-            RowDefinitions="Auto, *">
-			<Grid>
-				<Label 
-                    Text="Upcoming Events"
-                    SemanticProperties.Description="List of top destinations"
-                    Style="{StaticResource SectionText2Style}"/>
-			</Grid>
-			<!-- TODO below grid must be in a Component/Template -->
-			<Grid
-				Grid.Row="1">
-				<Frame 
-						Style="{StaticResource TopBorderStyle}">
-					<Grid
-						ColumnDefinitions="90, *">
-						<Image
-								Source="event2.jpg"
-								Style="{StaticResource TopImageStyle}">
-							<Image.Clip>
-								<RoundRectangleGeometry
-										Rect="2 ,2, 60, 60"
-										CornerRadius="12"/>
-							</Image.Clip>
-						</Image>
-						<Grid 
-								Grid.Column="1"
-								RowDefinitions="Auto, Auto"
-								Style="{StaticResource TopInfoContainerStyle}">
-							<Label
-									Text="Sanja Matsuri"
-									Style="{StaticResource PlaceTextStyle}"/>
-							<Label
-									Grid.Row="1"
-									Text="Osaka, Japan"
-									Style="{StaticResource NameTextStyle}"/>
-						</Grid>
+		<CollectionView x:Name="collectionView"
+                Margin="20"
+                ItemsSource="{Binding EventItems}"
+                SelectionMode="Single"
+				SelectionChangedCommand="{Binding SelectEventCommand}"
+                SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={RelativeSource Self}}"
+                >
+			<CollectionView.ItemTemplate>
+				<DataTemplate x:DataType="models:Events">
+					<Grid Padding="20,0,0,0"
+                  ColumnDefinitions="0.9*, 0.1*">
+						<Label x:Name="lblName"
+                       Text="{Binding EventName}" 
+                       VerticalTextAlignment="Center" />
 					</Grid>
-				</Frame>
-			</Grid>
-		</Grid>
+				</DataTemplate>
+			</CollectionView.ItemTemplate>
+		</CollectionView>
+
 		<Button 
 			Text="Logout"
 			Command="{Binding LogoutCommand}"

@@ -1,5 +1,8 @@
 ﻿using CommunityToolkit.Maui;
-using Microsoft.Extensions.Logging;
+using EventHub.Services;
+using EventHub.Services.Interfaces;
+using EventHub.ViewModels;
+using EventHub.Views;
 
 namespace EventHub
 {
@@ -18,9 +21,22 @@ namespace EventHub
 					fonts.AddFont("Inter-Semibold.ttf", "InterSemibold");
 				});
 
-#if DEBUG
-			builder.Logging.AddDebug();
-#endif
+			// Services
+			builder.Services.AddSingleton<IEventService, EventService>();
+			builder.Services.AddSingleton<IOrderService, OrderService>();
+			builder.Services.AddSingleton<ITicketService, TicketService>();
+
+			// Views
+			builder.Services.AddSingleton<Home>();
+			builder.Services.AddTransient<EventDetail>();
+			builder.Services.AddTransient<Order>();
+			builder.Services.AddSingleton<Tickets>();
+
+			// ViewModels
+			builder.Services.AddSingleton<HomeViewModel>();
+			builder.Services.AddTransient<EventDetailViewModel>();
+			builder.Services.AddTransient<OrderViewModel>();
+			builder.Services.AddSingleton<TicketViewModel>();
 
 			return builder.Build();
 		}

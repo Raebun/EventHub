@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text;
 using System.Windows.Input;
+using System.Net.Http.Headers;
 
 namespace EventHub.ViewModels
 {
@@ -54,14 +55,17 @@ namespace EventHub.ViewModels
 				var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(responseContent);
 
 				await SecureStorage.SetAsync("auth_token", tokenResponse.accessToken);
+				string authToken = await SecureStorage.GetAsync("auth_token");
 
-				var userInfoResponse = await _httpClient.GetAsync("https://10.0.2.2:7296/userinfo");
+				_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
+
+				var userInfoResponse = await _httpClient.GetAsync(uri + "User/me");
 				if (userInfoResponse.IsSuccessStatusCode)
 				{
 					var userInfoContent = await userInfoResponse.Content.ReadAsStringAsync();
 					var userInfo = JsonSerializer.Deserialize<UserInfo>(userInfoContent);
 
-					await SecureStorage.SetAsync("user_id", userInfo.Id);
+					await SecureStorage.SetAsync("user_id", userInfo.id);
 				}
 
 				LoginSuccess?.Invoke(this, EventArgs.Empty);
@@ -87,7 +91,7 @@ namespace EventHub.ViewModels
 
 		public class UserInfo
 		{
-			public string Id { get; set; }
+			public string id { get; set; }
 		}
 	}
 }
