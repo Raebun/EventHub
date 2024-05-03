@@ -37,6 +37,15 @@
                     FontSize="18"
                     Padding="10,5"
                     HorizontalOptions="FillAndExpand" />
+			<Button Text="Add to Favorites"
+					Command="{Binding AddToFavoritesCommand}"
+					TextColor="#333"
+					Background="White"
+					BorderColor="#333"
+					CornerRadius="10"
+					FontSize="18"
+					Padding="10,5"
+					HorizontalOptions="FillAndExpand" />
 		</StackLayout>
 	</ContentPage.Content>
 </ContentPage>

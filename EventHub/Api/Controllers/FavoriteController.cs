@@ -16,7 +16,7 @@ public class FavoriteController : Controller
 		_favoriteService = favoriteService;
 	}
 
-	[HttpGet("favorites/{userId}")]
+	[HttpGet("{userId}")]
 	public async Task<ActionResult<List<Favorite>>> GetFavoritesForUser(Guid userId)
 	{
 		var favorite = await _favoriteService.GetFavoritesForUserAsync(userId);

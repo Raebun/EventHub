@@ -1,12 +1,55 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:viewmodel="clr-namespace:EventHub.ViewModels"
+             xmlns:models="clr-namespace:EventHub.Models"
+			 x:DataType="viewmodel:FavoritesViewModel"
              x:Class="EventHub.Views.Favorites"
              Title="Favorites">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+	<ContentPage.Resources>
+		<Style TargetType="Frame">
+			<Setter Property="BackgroundColor" Value="White" />
+			<Setter Property="Margin" Value="10" />
+			<Setter Property="CornerRadius" Value="10" />
+			<Setter Property="Padding" Value="10" />
+		</Style>
+		<Style TargetType="Label" x:Key="TicketLabel">
+			<Setter Property="FontSize" Value="16" />
+			<Setter Property="VerticalOptions" Value="CenterAndExpand" />
+		</Style>
+		<Style TargetType="Label" x:Key="EventNameLabel" BasedOn="{StaticResource TicketLabel}">
+			<Setter Property="FontAttributes" Value="Bold" />
+		</Style>
+		<Style TargetType="Label" x:Key="EventDateLabel" BasedOn="{StaticResource TicketLabel}">
+			<Setter Property="FontSize" Value="14" />
+			<Setter Property="TextColor" Value="#666666" />
+		</Style>
+	</ContentPage.Resources>
+	
+	<CollectionView x:Name="collectionView"
+                Margin="20"
+                ItemsSource="{Binding FavoriteItems}">
+		<CollectionView.ItemTemplate>
+			<DataTemplate x:DataType="models:Favorites">
+				<Frame Padding="20,10"
+                   HasShadow="True">
+					<Grid ColumnDefinitions="0.7*, 0.3*">
+						<StackLayout Grid.Column="0" Spacing="5">
+							<Label Text="{Binding Event.EventName}" 
+                               Style="{StaticResource EventNameLabel}" />
+							<Label Text="{Binding Event.EventDate, StringFormat='{0:dd/MM/yyyy HH:mm}'}" 
+                               Style="{StaticResource EventDateLabel}" />
+							<Label Text="{Binding Event.Location}" 
+                               Style="{StaticResource TicketLabel}" />
+						</StackLayout>
+						<StackLayout Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center">
+							<Button Text="Delete"
+									Command="{Binding BindingContext.DeleteCommand, Source={x:Reference collectionView}}"
+									CommandParameter="{Binding .}" />
+						</StackLayout>
+					</Grid>
+				</Frame>
+			</DataTemplate>
+		</CollectionView.ItemTemplate>
+	</CollectionView>
 </ContentPage>

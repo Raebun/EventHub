@@ -26,6 +26,8 @@ namespace EventHub
 			builder.Services.AddSingleton<IOrderService, OrderService>();
 			builder.Services.AddSingleton<ITicketService, TicketService>();
 			builder.Services.AddSingleton<IUserService, UserService>();
+			builder.Services.AddSingleton<IFavoriteService, FavoriteService>();
+			builder.Services.AddSingleton<MessagingService>();
 
 			// Views
 			builder.Services.AddSingleton<Home>();
@@ -34,6 +36,7 @@ namespace EventHub
 			builder.Services.AddSingleton<Tickets>();
 			builder.Services.AddSingleton<Settings>();
 			builder.Services.AddSingleton<Profile>();
+			builder.Services.AddSingleton<Favorites>();
 
 			// ViewModels
 			builder.Services.AddSingleton<HomeViewModel>();
@@ -42,6 +45,7 @@ namespace EventHub
 			builder.Services.AddSingleton<TicketViewModel>();
 			builder.Services.AddSingleton<SettingsViewModel>();
 			builder.Services.AddSingleton<UserViewModel>();
+			builder.Services.AddSingleton<FavoritesViewModel>();
 
 			return builder.Build();
 		}
