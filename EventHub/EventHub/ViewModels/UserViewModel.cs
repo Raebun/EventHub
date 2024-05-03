@@ -1,4 +1,5 @@
-﻿using EventHub.Services.Interfaces;
+﻿using EventHub.Services;
+using EventHub.Services.Interfaces;
 using Shared.Models;
 using System.Windows.Input;
 
@@ -6,6 +7,7 @@ namespace EventHub.ViewModels;
 
 public class UserViewModel : BaseViewModel
 {
+	private readonly MessagingService _messagingService;
 	public ICommand SaveChangesCommand { get; }
 	private UserUpdate _updateUser;
 	private readonly IUserService _userService;
@@ -23,8 +25,9 @@ public class UserViewModel : BaseViewModel
 		}
 	}
 
-	public UserViewModel(IUserService userService)
+	public UserViewModel(IUserService userService, MessagingService messagingService)
 	{
+		_messagingService = messagingService;
 		_userService = userService;
 		_updateUser = new UserUpdate();
 		SaveChangesCommand = new Command(async () => await UpdateUserAsync());
@@ -48,6 +51,7 @@ public class UserViewModel : BaseViewModel
 		bool success = await _userService.UpdateUserInfoAsync(UpdateUser);
 		if (success)
 		{
+			_messagingService.NotifyProfileUpdated();
 			await Application.Current.MainPage.DisplayAlert("Success", "User information updated successfully.", "OK");
 			UpdateUser.Password = "";
 			await Shell.Current.GoToAsync("//Settings");

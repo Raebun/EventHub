@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using EventHub.Models;
+using EventHub.Services;
 using EventHub.Services.Interfaces;
 using EventHub.Views;
 using System.Collections.ObjectModel;
@@ -10,7 +11,7 @@ namespace EventHub.ViewModels;
 public class HomeViewModel : ObservableObject
 {
 	private readonly IEventService _eventService;
-
+	private readonly MessagingService _messagingService;
 	public ObservableCollection<Events> EventItems { get; set; } = [];
 	private string? _fullName;
 	public ICommand SelectEventCommand { get; set; }
@@ -22,8 +23,13 @@ public class HomeViewModel : ObservableObject
 		set { SetProperty(ref _fullName, value); }
 	}
 
-	public HomeViewModel(IEventService service)
+	public HomeViewModel(IEventService service, MessagingService messagingService)
 	{
+		_messagingService = messagingService;
+		_messagingService.ProfileUpdated += (sender, args) =>
+		{
+			UpdateUserInfoAsync();
+		};
 		_eventService = service;
 		SelectEventCommand = new Command<Events>(async (eventItem) => await SelectionChanged(eventItem));
 		_ = LoadEventsAsync();

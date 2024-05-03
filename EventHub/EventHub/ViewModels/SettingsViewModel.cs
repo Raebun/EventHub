@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using EventHub.Services;
 using EventHub.Services.Interfaces;
 using EventHub.Views;
 using System.Windows.Input;
@@ -9,6 +10,7 @@ public class SettingsViewModel : ObservableObject
 {
 	public ICommand LogoutCommand { get; }
 	public ICommand NavigateToProfileCommand { get; }
+	private readonly MessagingService _messagingService;
 
 	private readonly IUserService _userService;
 	private string _email;
@@ -26,8 +28,13 @@ public class SettingsViewModel : ObservableObject
 		set { SetProperty(ref _fullName, value); }
 	}
 
-	public SettingsViewModel(IUserService userService)
+	public SettingsViewModel(IUserService userService, MessagingService messagingService)
 	{
+		_messagingService = messagingService;
+		_messagingService.ProfileUpdated += (sender, args) =>
+		{
+			GetUserInfoAsync();
+		};
 		_userService = userService;
 		LogoutCommand = new Command(async () => await LogoutAsync());
 		NavigateToProfileCommand = new Command(async () => await NavigateToProfileAsync());
