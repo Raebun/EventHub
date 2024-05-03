@@ -48,8 +48,6 @@ public class SettingsViewModel : ObservableObject
 		{
 			SecureStorage.Remove("auth_token");
 			SecureStorage.Remove("user_id");
-			Console.WriteLine($"Logout didnt fail?");
-
 
 			await Shell.Current.GoToAsync(nameof(Login));
 		}

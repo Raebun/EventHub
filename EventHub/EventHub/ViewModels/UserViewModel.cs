@@ -58,7 +58,6 @@ public class UserViewModel : BaseViewModel
 		}
 		else
 		{
-			Console.WriteLine("UserViewModel Failed");
 			await Application.Current.MainPage.DisplayAlert("Failed", "Failed to update user information.", "OK");
 		}
 	}
