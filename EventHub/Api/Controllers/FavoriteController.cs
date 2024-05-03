@@ -1,12 +1,53 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Api.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Shared.Entities;
+using Shared.Models;
 
-namespace Api.Controllers
+namespace Api.Controllers;
+
+[Route("[controller]")]
+[ApiController]
+public class FavoriteController : Controller
 {
-	public class FavoriteController : Controller
+	private readonly IFavoriteService _favoriteService;
+
+	public FavoriteController(IFavoriteService favoriteService)
 	{
-		public IActionResult Index()
+		_favoriteService = favoriteService;
+	}
+
+	[HttpGet("favorites/{userId}")]
+	public async Task<ActionResult<List<Favorite>>> GetFavoritesForUser(Guid userId)
+	{
+		var favorite = await _favoriteService.GetFavoritesForUserAsync(userId);
+		return Ok(favorite);
+	}
+
+	[HttpPost]
+	public async Task<ActionResult> AddFavorite([FromBody] AddFavoriteModel request)
+	{
+		try
 		{
-			return View();
+			await _favoriteService.AddFavoriteAsync(request.UserId, request.EventId);
+			return Ok();
+		}
+		catch (Exception ex)
+		{
+			return BadRequest(ex.Message);
+		}
+	}
+
+	[HttpDelete]
+	public async Task<ActionResult> RemoveFavorite([FromBody] AddFavoriteModel request)
+	{
+		try
+		{
+			await _favoriteService.RemoveFavoriteAsync(request.UserId, request.EventId);
+			return Ok();
+		}
+		catch (Exception ex)
+		{
+			return BadRequest(ex.Message);
 		}
 	}
 }
