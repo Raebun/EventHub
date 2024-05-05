@@ -1,0 +1,27 @@
+﻿@using EventHubOrganiser.Services.Interfaces
+@inject NavigationManager NavigationManager
+@inject IAuthService AuthService
+@rendermode InteractiveServer
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Task.Delay(500); // Add a small delay to ensure the loading indicator is visible
+            await CheckAuthenticationAsync();
+        }
+    }
+
+    private async Task CheckAuthenticationAsync()
+    {
+        if (await AuthService.IsAuthenticatedAsync())
+        {
+            NavigationManager.NavigateTo("/home");
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+    }
+}

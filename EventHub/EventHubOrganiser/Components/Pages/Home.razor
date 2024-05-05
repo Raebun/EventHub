@@ -1,0 +1,22 @@
+﻿@page "/home"
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+@rendermode InteractiveServer
+
+<AuthenticationGuard />
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<button @onclick="Logout">Logout</button>
+
+@code {
+    private async Task Logout()
+    {
+        await JS.InvokeVoidAsync("localStorage.removeItem", "auth_token");
+        NavigationManager.NavigateTo("login");
+    }
+}

@@ -1,0 +1,63 @@
+﻿@page "/login"
+@rendermode InteractiveServer 
+@using EventHubOrganiser.Models
+@using EventHubOrganiser.Services.Interfaces
+@using System.Net.Http.Headers
+@using System.Text.Json
+@using Shared.Models
+@inject IAuthService authService
+@inject NavigationManager NavigationManager
+@inject HttpClient httpClient
+@inject IJSRuntime JS
+
+<AuthenticationGuard />
+
+<div class="d-flex justify-content-center align-items-center">
+    <div style="width: 400px; background-color: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <h1 style="text-align: center; margin-bottom: 20px;">Login</h1>
+
+        @if (errorMessage != null)
+        {
+            <p style="color: red; text-align: center;">@errorMessage</p>
+        }
+
+        <EditForm Model="LoginModel" OnValidSubmit="HandleValidSubmit" formname="LoginForm">
+            <DataAnnotationsValidator />
+            <div style="margin-bottom: 10px;">
+                <label style="display: block;">Email:</label>
+                <InputText @bind-Value="LoginModel.Email" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;" />
+                <ValidationMessage For="@(() => LoginModel.Email)" />
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label style="display: block;">Password:</label>
+                <InputText @bind-Value="LoginModel.Password" type="password" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;" />
+                <ValidationMessage For="@(() => LoginModel.Password)" />
+            </div>
+            <button type="submit" style="width: 100%; padding: 10px; background-color: #E98575; color: #fff; border: none; border-radius: 4px; cursor: pointer;">Login</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    public LoginModel? LoginModel { get; set; }
+    protected override void OnInitialized() => LoginModel ??= new();
+
+    private string errorMessage;
+
+    private async Task HandleValidSubmit()
+    {
+        var response = await authService.Login(LoginModel.Email, LoginModel.Password);
+        if (response != null)
+        {
+            // Note to self: @rendermode InteractiveServer  is needed to avoid interop JS error
+            await JS.InvokeVoidAsync("localStorage.setItem", "auth_token", response.accessToken);
+
+            NavigationManager.NavigateTo("home");
+        }
+        else
+        {
+            errorMessage = "Invalid email or password";
+        }
+    }
+}

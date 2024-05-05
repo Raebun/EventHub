@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text;
 using System.Windows.Input;
 using System.Net.Http.Headers;
+using Shared.Models;
 
 namespace EventHub.ViewModels
 {
@@ -79,19 +80,6 @@ namespace EventHub.ViewModels
 		private void HandleLoginFailure()
 		{
 			ErrorMessage = "Login failed. Please check your credentials and try again.";
-		}
-
-		public class TokenResponse
-		{
-			public string tokenType { get; set; }
-			public string accessToken { get; set; }
-			public int expiresIn { get; set; }
-			public string refreshToken { get; set; }
-		}
-
-		public class UserInfo
-		{
-			public string id { get; set; }
 		}
 	}
 }

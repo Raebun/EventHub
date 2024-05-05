@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{8BFAA504-F5C2-4C58-9A06-8D57E943A4C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventHub", "EventHub\EventHub.csproj", "{8EA7472B-CC6E-4401-A14B-4A14246AFDE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventHub", "EventHub\EventHub.csproj", "{8EA7472B-CC6E-4401-A14B-4A14246AFDE7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventHubOrganiser", "EventHubOrganiser\EventHubOrganiser.csproj", "{CC917BDA-6175-41BA-9498-778ECB935F69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{8EA7472B-CC6E-4401-A14B-4A14246AFDE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EA7472B-CC6E-4401-A14B-4A14246AFDE7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8EA7472B-CC6E-4401-A14B-4A14246AFDE7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{CC917BDA-6175-41BA-9498-778ECB935F69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC917BDA-6175-41BA-9498-778ECB935F69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC917BDA-6175-41BA-9498-778ECB935F69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC917BDA-6175-41BA-9498-778ECB935F69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
