@@ -98,5 +98,17 @@ namespace Api.Controllers
 				return BadRequest("Event could not be removed");
 			}
 		}
-	}
+
+        /// <summary>
+        /// Retrieves all events associated with a specific user.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <returns>The list of events associated with the user.</returns>
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<List<Event>>> GetEventsByUserId(Guid userId)
+        {
+            var events = await _eventService.GetEventsByUserIdAsync(userId);
+            return Ok(events);
+        }
+    }
 }

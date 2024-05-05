@@ -86,5 +86,11 @@ namespace Api.Services
 
 			return true;
 		}
-	}
+
+        /// <inheritdoc />
+        public async Task<List<Event>> GetEventsByUserIdAsync(Guid userId)
+        {
+            return await _context.Events.Where(e => e.UserId == userId).ToListAsync();
+        }
+    }
 }

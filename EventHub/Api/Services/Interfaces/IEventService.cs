@@ -49,5 +49,12 @@ namespace Api.Services.Interfaces
 		/// <param name="id">The ID of the event to delete.</param>
 		/// <returns>True if the event was deleted successfully, otherwise false.</returns>
 		Task<bool> DeleteEventAsync(int id);
-	}
+
+        /// <summary>
+        /// Retrieves all events associated with a specific user.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <returns>The list of events associated with the user.</returns>
+        Task<List<Event>> GetEventsByUserIdAsync(Guid userId);
+    }
 }
