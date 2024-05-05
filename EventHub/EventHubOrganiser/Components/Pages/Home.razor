@@ -35,7 +35,7 @@
 
             @if (events != null && events.Any())
             {
-                <table class="table bg-white rounded">
+                <table class="table bg-dark text-light rounded">
                     <thead>
                         <tr>
                             <th></th>
@@ -90,7 +90,7 @@
             }
         </div>
         <div class="col-md-4">
-            <div class="card bg-white rounded">
+            <div class="card bg-dark text-light rounded">
                 <div class="card-body">
                     <h5 class="card-title">Add New Event</h5>
                     <form @onsubmit="AddEvent">
@@ -114,6 +114,7 @@
                             <label for="eventDate">Event Date</label>
                             <input type="datetime-local" class="form-control" id="eventDate" @bind="newEvent.EventDate">
                         </div>
+                        <br />
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="isActive" @bind="newEvent.IsActive">
                             <label class="form-check-label" for="isActive">Currently Active</label>
