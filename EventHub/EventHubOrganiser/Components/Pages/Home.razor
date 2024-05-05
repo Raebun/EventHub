@@ -197,6 +197,7 @@
     protected override async Task OnInitializedAsync()
     {
         events = await EventService.LoadEventsAsync();
+        events = events.OrderBy(ev => ev.EventDate).ToList();
     }
 
     private void CloseModal()
