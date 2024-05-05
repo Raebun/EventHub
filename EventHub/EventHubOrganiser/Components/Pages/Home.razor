@@ -1,22 +1,285 @@
 ﻿@page "/home"
+@using EventHubOrganiser.Services.Interfaces
+@using Shared.Models
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JS
+@inject IEventService EventService
 @rendermode InteractiveServer
 
 <AuthenticationGuard />
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<style>
+    .modal {
+        z-index: 1050;
+    }
 
-Welcome to your new app.
+    .showModal {
+        display: block;
+    }
 
-<button @onclick="Logout">Logout</button>
+    .hideModal {
+        display: none;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="mb-4 text-light">
+                <h1 class="font-weight-boldmb-3">Welcome!</h1>
+                <p>Welcome to your event hub! Explore and manage your events with ease.</p>
+                <button class="btn btn-primary" @onclick="Logout">Logout</button>
+            </div>
+
+            @if (events != null && events.Any())
+            {
+                <table class="table bg-white rounded">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Event Name</th>
+                            <th>Event Description</th>
+                            <th>Event Location</th>
+                            <th>Event Price</th>
+                            <th>Event Date</th>
+                            <th>Sold tickets</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ev in events)
+                        {
+                            <tr>
+                                <td>
+                                    @if (ev.IsActive)
+                                    {
+                                        <span class="badge rounded-pill bg-success">Ongoing</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge rounded-pill bg-secondary">Inactive</span>
+                                    }
+                                </td>
+                                <td>@ev.EventName</td>
+                                <td>@ev.EventDescription</td>
+                                <td>@ev.Location</td>
+                                <td>€@ev.TicketPrice</td>
+                                <td>@ev.EventDate</td>
+                                <td>@ev.TicketsSold</td>
+                                <td>
+                                    <button class="btn btn-primary" @onclick="() => EditEvent(ev)">Edit</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger" @onclick="() => DeleteEvent(ev)">Delete</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-info" @onclick="() => ShowTicketHolders(ev)">Select</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-light">No events available.</p>
+            }
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-white rounded">
+                <div class="card-body">
+                    <h5 class="card-title">Add New Event</h5>
+                    <form @onsubmit="AddEvent">
+                        <div class="form-group">
+                            <label for="eventName">Event Name</label>
+                            <input type="text" class="form-control" id="eventName" @bind="newEvent.EventName">
+                        </div>
+                        <div class="form-group">
+                            <label for="eventDescription">Event Description</label>
+                            <textarea class="form-control" id="eventDescription" rows="3" @bind="newEvent.EventDescription"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" class="form-control" id="location" @bind="newEvent.Location">
+                        </div>
+                        <div class="form-group">
+                            <label for="ticketPrice">Ticket Price</label>
+                            <input type="number" class="form-control" id="ticketPrice" @bind="newEvent.TicketPrice">
+                        </div>
+                        <div class="form-group">
+                            <label for="eventDate">Event Date</label>
+                            <input type="datetime-local" class="form-control" id="eventDate" @bind="newEvent.EventDate">
+                        </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="isActive" @bind="newEvent.IsActive">
+                            <label class="form-check-label" for="isActive">Currently Active</label>
+                        </div>
+                        <br />
+                        <button type="submit" class="btn btn-primary">Add Event</button>
+                    </form>
+                </div>
+            </div>
+            <br />
+
+            @if (ticketHolders != null && ticketHolders.Any())
+            {
+                <ul class="list-group">
+                    <li class="list-group-item active">Ticket Holders</li>
+                    @foreach (var ticketHolder in ticketHolders)
+                    {
+                        <li class="list-group-item">@ticketHolder.FullName <br /> Purchase Date: @ticketHolder.PurchaseDate.ToString("yyyy-MM-dd HH:mm")</li>
+                    }
+                </ul>
+            }
+
+        </div>
+    </div>
+</div>
+
+<div class="modal @showEditModalClass" id="editEventModal" tabindex="-1" role="dialog" aria-labelledby="editEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editEventModalLabel">Edit Event</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="CloseModal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5 class="card-title">Edit Event</h5>
+                <form @onsubmit="SaveChanges">
+                    <div class="form-group">
+                        <label for="editEventName">Event Name</label>
+                        <input type="text" class="form-control" id="editEventName" @bind="selectedEvent.EventName">
+                    </div>
+                    <div class="form-group">
+                        <label for="editEventDescription">Event Description</label>
+                        <textarea class="form-control" id="editEventDescription" rows="3" @bind="selectedEvent.EventDescription"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editLocation">Location</label>
+                        <input type="text" class="form-control" id="editLocation" @bind="selectedEvent.Location">
+                    </div>
+                    <div class="form-group">
+                        <label for="editTicketPrice">Ticket Price</label>
+                        <input type="number" class="form-control" id="editTicketPrice" @bind="selectedEvent.TicketPrice">
+                    </div>
+                    <div class="form-group">
+                        <label for="editEventDate">Event Date</label>
+                        <input type="datetime-local" class="form-control" id="editEventDate" @bind="selectedEvent.EventDate">
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="isActive" @bind="selectedEvent.IsActive">
+                        <label class="form-check-label" for="isActive">Currently Active</label>
+                    </div>
+                    <br />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseModal">Close</button>
+                <button type="button" class="btn btn-primary" @onclick="SaveChanges">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
+    private List<Events> events;
+    private Events newEvent = new Events();
+    private Events selectedEvent = new Events();
+    private List<TicketModel> ticketHolders;
+    private string showEditModalClass = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        events = await EventService.LoadEventsAsync();
+    }
+
+    private void CloseModal()
+    {
+        showEditModalClass = "hideModal";
+    }
+
+    private async Task AddEvent()
+    {
+        var eventToAdd = new EventCreateModel
+        {
+            EventName = newEvent.EventName,
+            EventDescription = newEvent.EventDescription,
+            EventDate = newEvent.EventDate,
+            Location = newEvent.Location,
+            TicketPrice = newEvent.TicketPrice,
+            IsActive = newEvent.IsActive,
+            UserId = Guid.Parse(await JS.InvokeAsync<string>("localStorage.getItem", "user_id"))
+        };
+
+        var success = await EventService.AddEventAsync(eventToAdd);
+        if (success)
+        {
+            newEvent = new Events();
+            events = await EventService.LoadEventsAsync();
+        }
+        else
+        {
+            await JS.InvokeVoidAsync("alert", "Failed to add event.");
+        }
+    }
+
+    private void EditEvent(Events ev)
+    {
+        selectedEvent = new Events
+        {
+            EventId = ev.EventId,
+            EventName = ev.EventName,
+            EventDescription = ev.EventDescription,
+            Location = ev.Location,
+            TicketPrice = ev.TicketPrice,
+            IsActive = ev.IsActive,
+            EventDate = ev.EventDate
+        };
+        showEditModalClass = "showModal";
+    }
+
+    private async Task SaveChanges()
+    {
+        var success = await EventService.UpdateEventAsync(selectedEvent);
+        if (success)
+        {
+            showEditModalClass = "hideModal";
+            events = await EventService.LoadEventsAsync();
+        }
+        else
+        {
+            await JS.InvokeVoidAsync("alert", "Failed to edit event.");
+        }
+    }
+
+    private async Task DeleteEvent(Events ev)
+    {
+        var result = await EventService.DeleteEventAsync(ev.EventId);
+        if (result)
+        {
+            events.Remove(ev);
+        }
+        else
+        {
+            await JS.InvokeVoidAsync("alert", $"Failed to delete event: {ev.EventName}");
+        }
+    }
+
+    private async Task ShowTicketHolders(Events ev)
+    {
+        ticketHolders = await EventService.GetTicketHoldersAsync(ev.EventId);
+    }
+
     private async Task Logout()
     {
         await JS.InvokeVoidAsync("localStorage.removeItem", "auth_token");
+        await JS.InvokeVoidAsync("localStorage.removeItem", "user_id");
         NavigationManager.NavigateTo("login");
     }
 }

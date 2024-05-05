@@ -45,6 +45,7 @@ namespace Api.Services
 				EventDate = model.EventDate,
 				Location = model.Location,
 				TicketPrice = model.TicketPrice,
+				IsActive = model.IsActive,
 				UserId = model.UserId
 			};
 
@@ -66,6 +67,7 @@ namespace Api.Services
 			existingEvent.EventDescription = model.EventDescription;
 			existingEvent.EventDate = model.EventDate ?? existingEvent.EventDate;
 			existingEvent.Location = model.Location;
+			existingEvent.IsActive = model.IsActive;
 			existingEvent.TicketPrice = model.TicketPrice ?? existingEvent.TicketPrice;
 
 			await _context.SaveChangesAsync();

@@ -11,7 +11,8 @@
 		public required string Location { get; set; }
 
 		public required float TicketPrice { get; set; }
+        public bool IsActive { get; set; }
 
-		public Guid UserId { get; set; }
+        public Guid UserId { get; set; }
 	}
 }

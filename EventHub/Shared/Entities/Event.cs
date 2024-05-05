@@ -8,7 +8,8 @@
 		public required DateTime EventDate { get; set; }
 		public required string Location { get; set; }
 		public required float TicketPrice { get; set; }
-		public Guid UserId { get; set; }
+        public bool IsActive { get; set; }
+        public Guid UserId { get; set; }
 		public User? User { get; set; }
 	}
 }

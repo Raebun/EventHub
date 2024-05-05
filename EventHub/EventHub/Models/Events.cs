@@ -8,5 +8,6 @@
         public string Location { get; set; }
         public float TicketPrice { get; set; }
         public DateTime EventDate { get; set; }
+        public bool IsActive { get; set; }
     }
 }

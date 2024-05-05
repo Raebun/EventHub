@@ -64,7 +64,7 @@ namespace EventHub.ViewModels
 				if (userInfoResponse.IsSuccessStatusCode)
 				{
 					var userInfoContent = await userInfoResponse.Content.ReadAsStringAsync();
-					var userInfo = JsonSerializer.Deserialize<UserInfo>(userInfoContent);
+					var userInfo = JsonSerializer.Deserialize<UserId>(userInfoContent);
 
 					await SecureStorage.SetAsync("user_id", userInfo.id);
 				}

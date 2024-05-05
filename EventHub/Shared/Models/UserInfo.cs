@@ -1,6 +1,6 @@
 ﻿namespace Shared.Models;
 
-public class UserInfo
+public class UserId
 {
     public string id { get; set; }
 }

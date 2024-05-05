@@ -6,6 +6,7 @@
 		public required string EventDescription { get; set; }
 		public DateTime? EventDate { get; set; }
 		public required string Location { get; set; }
+		public required bool IsActive { get; set; }
 		public float? TicketPrice { get; set; }
 	}
 }

@@ -9,6 +9,7 @@ builder.Services.AddRazorComponents()
 	.AddInteractiveServerComponents();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddHttpClient();
 
 var app = builder.Build();

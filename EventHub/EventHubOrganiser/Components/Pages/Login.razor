@@ -50,8 +50,7 @@
         var response = await authService.Login(LoginModel.Email, LoginModel.Password);
         if (response != null)
         {
-            // Note to self: @rendermode InteractiveServer  is needed to avoid interop JS error
-            await JS.InvokeVoidAsync("localStorage.setItem", "auth_token", response.accessToken);
+            
 
             NavigationManager.NavigateTo("home");
         }
