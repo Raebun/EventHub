@@ -11,32 +11,84 @@ namespace EventHub.ViewModels;
 public class HomeViewModel : ObservableObject
 {
 	private readonly IEventService _eventService;
-	private readonly MessagingService _messagingService;
+    private readonly ISearchService _searchService;
+    private readonly MessagingService _messagingService;
 	public ObservableCollection<Events> EventItems { get; set; } = [];
 	private string? _fullName;
 	public ICommand SelectEventCommand { get; set; }
+    public ICommand SortByPriceAscCommand { get; }
+    public ICommand SortByPriceDescCommand { get; }
+    public ICommand SortByPopularityCommand { get; }
+    public ICommand SortByDateAscCommand { get; }
+    public ICommand SortByDateDescCommand { get; }
+    public ICommand FilterByDateCommand { get; }
+    public ICommand FilterByNameCommand { get; }
+    public ICommand FilterByPriceCommand { get; }
+    public ICommand FilterByLocationCommand { get; }
+
+    private int _selectedIndex;
+    public int SelectedIndex
+    {
+        get { return _selectedIndex; }
+        set
+        {
+            if (_selectedIndex != value)
+            {
+                _selectedIndex = value;
+                OnPropertyChanged(nameof(SelectedIndex));
+                SortBySelectedIndex();
+            }
+        }
+    }
 
 
-	public string FullName
+    public string FullName
 	{
 		get { return _fullName; }
 		set { SetProperty(ref _fullName, value); }
 	}
 
-	public HomeViewModel(IEventService service, MessagingService messagingService)
-	{
-		_messagingService = messagingService;
+	public HomeViewModel(
+        ISearchService searchService,
+        IEventService service, 
+        MessagingService messagingService
+     ) {
+        _searchService = searchService;
+        _messagingService = messagingService;
 		_messagingService.ProfileUpdated += (sender, args) =>
 		{
 			UpdateUserInfoAsync();
 		};
 		_eventService = service;
 		SelectEventCommand = new Command<Events>(async (eventItem) => await SelectionChanged(eventItem));
-		_ = LoadEventsAsync();
+        SortByPriceAscCommand = new Command(async () => await SortByPriceAsc());
+        SortByPriceDescCommand = new Command(async () => await SortByPriceDesc());
+        SortByPopularityCommand = new Command(async () => await SortByPopularity());
+        SortByDateAscCommand = new Command(async () => await SortByDateAsc());
+        SortByDateDescCommand = new Command(async () => await SortByDateDesc());
+        FilterByDateCommand = new Command<string>(async (date) => await FilterByDate(date));
+        FilterByNameCommand = new Command<string>(async (name) => await FilterByName(name));
+        FilterByPriceCommand = new Command<float>(async (price) => await FilterByPrice(price));
+        FilterByLocationCommand = new Command<string>(async (location) => await FilterByLocation(location));
+        _ = LoadEventsAsync();
 		_ = UpdateUserInfoAsync();
 	}
 
-	public async Task UpdateUserInfoAsync()
+    private async Task SortBySelectedIndex()
+    {
+        switch (SelectedIndex)
+        {
+            case 0:
+                await SortByPriceAsc();
+                break;
+            case 1:
+                await SortByPriceDesc();
+                break;
+            default:
+                break;
+        }
+    }
+    public async Task UpdateUserInfoAsync()
 	{
 		var userInfo = await _eventService.UpdateUserInfoAsync();
 		if (userInfo != null)
@@ -62,4 +114,53 @@ public class HomeViewModel : ObservableObject
 			};
 		await Shell.Current.GoToAsync(nameof(EventDetail), navigationParameter);
 	}
+
+    private async Task SortByPriceAsc()
+    {
+        var sortedEvents = await _searchService.SortEventsByPriceAsc();
+        EventItems.Clear();
+        sortedEvents.ForEach(EventItems.Add);
+    }
+    private async Task SortByPriceDesc()
+    {
+        var sortedEvents = await _searchService.SortEventsByPriceDesc();
+        EventItems.Clear();
+        sortedEvents.ForEach(EventItems.Add);
+    }
+
+    private async Task SortByPopularity()
+    {
+        // Implement
+    }
+
+    private async Task SortByDateAsc()
+    {
+        // Implement
+    }
+
+    private async Task SortByDateDesc()
+    {
+        // Implement
+    }
+
+    private async Task FilterByDate(string date)
+    {
+        // Implement
+    }
+
+    private async Task FilterByName(string name)
+    {
+        // Implement
+    }
+
+    private async Task FilterByPrice(float price)
+    {
+        // Implement
+    }
+
+    private async Task FilterByLocation(string location)
+    {
+        // Implement
+    }
+
 }

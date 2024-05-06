@@ -54,89 +54,112 @@
 		</ResourceDictionary>
 	</ContentPage.Resources>
 
-	<StackLayout>
-		<!-- Header Section -->
-		<Grid VerticalOptions="Start">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="Auto" />
-			</Grid.ColumnDefinitions>
+	<ScrollView>
+		<StackLayout>
+			<!-- Header Section -->
+			<Grid VerticalOptions="Start">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
 
-			<!-- Label on the left -->
-			<Label Text="{Binding FullName}"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Start"
-                   FontSize="Title"
-                   FontAttributes="Bold" />
+				<!-- Label on the left -->
+				<Label Text="{Binding FullName}"
+               VerticalOptions="Center"
+               HorizontalOptions="Start"
+               FontSize="Title"
+               FontAttributes="Bold" />
 
-			<!-- Frame with profile picture on the right -->
-			<Frame Grid.Column="1"
-                   CornerRadius="50"
-                   BorderColor="Transparent"
-                   BackgroundColor="Transparent"
-                   HorizontalOptions="End"
-                   VerticalOptions="Center"
-                   WidthRequest="50"
-                   HeightRequest="50">
-				<Image Source="profile_picture.jpg"
-                       Aspect="AspectFill"
-                       HeightRequest="100"
-                       WidthRequest="100" />
-			</Frame>
-		</Grid>
+				<!-- Frame with profile picture on the right -->
+				<Frame Grid.Column="1"
+               CornerRadius="50"
+               BorderColor="Transparent"
+               BackgroundColor="Transparent"
+               HorizontalOptions="End"
+               VerticalOptions="Center"
+               WidthRequest="50"
+               HeightRequest="50">
+					<Image Source="profile_picture.jpg"
+                   Aspect="AspectFill"
+                   HeightRequest="100"
+                   WidthRequest="100" />
+				</Frame>
+			</Grid>
 
-		<BoxView HeightRequest="50" BackgroundColor="Transparent" />
+			<BoxView HeightRequest="50" BackgroundColor="Transparent" />
 
-		<!-- Search Section -->
-		<Grid>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="Auto" />
-			</Grid.ColumnDefinitions>
+			<!-- Search Section -->
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
 
-			<Border 
-				StrokeThickness="0"
-				BackgroundColor="White"
-				StrokeShape="RoundRectangle 10,10,10,10">
+				<Border 
+			StrokeThickness="0"
+			BackgroundColor="White"
+			StrokeShape="RoundRectangle 10,10,10,10">
 
-				<SearchBar 
-				Grid.Column="0" 
-				Placeholder="Search Event"
-				Style="{StaticResource CustomSearchBarStyle}" />
-			</Border>
-		</Grid>
+					<SearchBar 
+			Grid.Column="0" 
+			Placeholder="Search Event"
+			Style="{StaticResource CustomSearchBarStyle}" />
+				</Border>
+			</Grid>
 
-		<BoxView HeightRequest="50" BackgroundColor="Transparent" />
+			<BoxView HeightRequest="50" BackgroundColor="Transparent" />
 
-		<CollectionView x:Name="collectionView"
-                ItemsSource="{Binding EventItems}"
-                SelectionMode="Single"
-				SelectionChangedCommand="{Binding SelectEventCommand}"
-                SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={RelativeSource Self}}">
-			<CollectionView.ItemTemplate>
-				<DataTemplate x:DataType="models:Events">
-					<Grid Margin="10" Padding="10" BackgroundColor="White">
-						<Grid.RowDefinitions>
-							<RowDefinition Height="Auto" />
-							<RowDefinition Height="Auto" />
-							<RowDefinition Height="Auto" />
-							<RowDefinition Height="Auto" />
-						</Grid.RowDefinitions>
-						<Label Text="{Binding EventName}"
-							   Style="{StaticResource SectionText1Style}"
-							   Grid.Row="0"
-							   HorizontalOptions="Start" />
-						<Label Text="{Binding EventDate, StringFormat='Date: {0:d}'}"
-							   Style="{StaticResource NameTextStyle}"
-							   Grid.Row="1"
-							   HorizontalOptions="Start" />
-						<Label Text="{Binding Location}" 
-							   Grid.Row="3"
-							   VerticalOptions="CenterAndExpand" />
-					</Grid>
-				</DataTemplate>
-			</CollectionView.ItemTemplate>
+			<!-- Sorting Dropdown -->
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
 
-		</CollectionView>
-	</StackLayout>
+				<Label Text="Sort by:" VerticalOptions="Center" />
+
+				<Picker x:Name="sortPicker" Grid.Column="1" Title="Select Sort Order" SelectedIndex="{Binding SelectedIndex}">
+					<Picker.ItemsSource>
+						<x:Array Type="{x:Type x:String}">
+							<x:String>Price Ascending</x:String>
+							<x:String>Price Descending</x:String>
+						</x:Array>
+					</Picker.ItemsSource>
+				</Picker>
+			</Grid>
+
+			<BoxView HeightRequest="50" BackgroundColor="Transparent" />
+
+			<CollectionView x:Name="collectionView"
+            ItemsSource="{Binding EventItems}"
+            SelectionMode="Single"
+			SelectionChangedCommand="{Binding SelectEventCommand}"
+            SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={RelativeSource Self}}">
+				<CollectionView.ItemTemplate>
+					<DataTemplate x:DataType="models:Events">
+						<Grid Margin="10" Padding="10" BackgroundColor="White">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+							</Grid.RowDefinitions>
+							<Label Text="{Binding EventName}"
+						   Style="{StaticResource SectionText1Style}"
+						   Grid.Row="0"
+						   HorizontalOptions="Start" />
+							<Label Text="{Binding EventDate, StringFormat='Date: {0:d}'}"
+						   Style="{StaticResource NameTextStyle}"
+						   Grid.Row="1"
+						   HorizontalOptions="Start" />
+							<Label Text="{Binding Location}" 
+						   Grid.Row="3"
+						   VerticalOptions="CenterAndExpand" />
+						</Grid>
+					</DataTemplate>
+				</CollectionView.ItemTemplate>
+
+			</CollectionView>
+		</StackLayout>
+	</ScrollView>
 </ContentPage>

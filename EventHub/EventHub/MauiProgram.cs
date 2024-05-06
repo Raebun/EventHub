@@ -24,6 +24,7 @@ namespace EventHub
 			// Services
 			builder.Services.AddSingleton<IEventService, EventService>();
 			builder.Services.AddSingleton<IOrderService, OrderService>();
+			builder.Services.AddSingleton<ISearchService, SearchService>();
 			builder.Services.AddSingleton<ITicketService, TicketService>();
 			builder.Services.AddSingleton<IUserService, UserService>();
 			builder.Services.AddSingleton<IFavoriteService, FavoriteService>();
