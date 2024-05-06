@@ -24,7 +24,7 @@ namespace Api.Services
 				.ToListAsync();
 		}
 
-		public async Task<List<Ticket>> GetTicketsForUserAsync(Guid userId)
+        public async Task<List<Ticket>> GetTicketsForUserAsync(Guid userId)
 		{
 			return await _context.Tickets
 				.Include(t => t.User)
