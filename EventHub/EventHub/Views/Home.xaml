@@ -93,18 +93,36 @@
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
 					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
 
 				<Border 
-			StrokeThickness="0"
-			BackgroundColor="White"
-			StrokeShape="RoundRectangle 10,10,10,10">
+					Grid.Column="0"
+					StrokeThickness="0"
+					BackgroundColor="White"
+					StrokeShape="RoundRectangle 10,10,10,10">
 
 					<SearchBar 
-			Grid.Column="0" 
-			Placeholder="Search Event"
-			Style="{StaticResource CustomSearchBarStyle}" />
+						Placeholder="Search Event"
+						Text="{Binding SearchTerm, Mode=TwoWay}"
+						Style="{StaticResource CustomSearchBarStyle}" />
 				</Border>
+
+				<!-- Filter -->
+				<Picker x:Name="filterPicker"
+						Grid.Column="1"
+						Title="Select Filter"
+						SelectedIndex="{Binding SelectedFilterIndex, Mode=TwoWay}">
+					<Picker.ItemsSource>
+						<x:Array Type="{x:Type x:String}">
+							<x:String>Name</x:String>
+							<x:String>Price</x:String>
+							<x:String>Location</x:String>
+							<x:String>Date</x:String>
+						</x:Array>
+					</Picker.ItemsSource>
+				</Picker>
+
 			</Grid>
 
 			<BoxView HeightRequest="10" BackgroundColor="Transparent" />
@@ -118,7 +136,11 @@
 
 				<Label Text="Sort by:" VerticalOptions="Center" />
 
-				<Picker x:Name="sortPicker" Grid.Column="1" Title="Select Sort Order" SelectedIndex="{Binding SelectedIndex}">
+				<Picker
+					x:Name="sortPicker"
+					Grid.Column="1"
+					Title="Select Sort Order"
+					SelectedIndex="{Binding SelectedIndex}">
 					<Picker.ItemsSource>
 						<x:Array Type="{x:Type x:String}">
 							<x:String>Price Ascending</x:String>

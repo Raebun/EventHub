@@ -16,10 +16,6 @@ public class HomeViewModel : ObservableObject
 	public ObservableCollection<Events> EventItems { get; set; } = [];
 	private string? _fullName;
 	public ICommand SelectEventCommand { get; set; }
-    public ICommand FilterByDateCommand { get; }
-    public ICommand FilterByNameCommand { get; }
-    public ICommand FilterByPriceCommand { get; }
-    public ICommand FilterByLocationCommand { get; }
 
     private int _selectedIndex;
     public int SelectedIndex
@@ -36,6 +32,35 @@ public class HomeViewModel : ObservableObject
         }
     }
 
+    private int _selectedFilterIndex;
+    public int SelectedFilterIndex
+    {
+        get { return _selectedFilterIndex; }
+        set
+        {
+            if (_selectedFilterIndex != value)
+            {
+                _selectedFilterIndex = value;
+                OnPropertyChanged(nameof(SelectedFilterIndex));
+                ApplyFilter();
+            }
+        }
+    }
+
+    private string _searchTerm;
+    public string SearchTerm
+    {
+        get { return _searchTerm; }
+        set
+        {
+            if (_searchTerm != value)
+            {
+                _searchTerm = value;
+                OnPropertyChanged(nameof(SearchTerm));
+                ApplyFilter();
+            }
+        }
+    }
 
     public string FullName
 	{
@@ -56,13 +81,27 @@ public class HomeViewModel : ObservableObject
 		};
 		_eventService = service;
 		SelectEventCommand = new Command<Events>(async (eventItem) => await SelectionChanged(eventItem));
-        FilterByDateCommand = new Command<string>(async (date) => await FilterByDate(date));
-        FilterByNameCommand = new Command<string>(async (name) => await FilterByName(name));
-        FilterByPriceCommand = new Command<float>(async (price) => await FilterByPrice(price));
-        FilterByLocationCommand = new Command<string>(async (location) => await FilterByLocation(location));
         _ = LoadEventsAsync();
 		_ = UpdateUserInfoAsync();
 	}
+
+    private async Task ApplyFilter()
+    {
+        string filter = GetFilterByIndex(SelectedFilterIndex);
+        await FilterBy(filter, SearchTerm);
+    }
+
+    private string GetFilterByIndex(int index)
+    {
+        switch (index)
+        {
+            case 0: return "name";
+            case 1: return "price";
+            case 2: return "location";
+            case 3: return "date";
+            default: return string.Empty;
+        }
+    }
 
     private async Task SortBySelectedIndex()
     {
@@ -122,24 +161,16 @@ public class HomeViewModel : ObservableObject
         sortedEvents.ForEach(EventItems.Add);
     }
 
-    private async Task FilterByDate(string date)
+    private async Task FilterBy(string filterBy, string searchTerm)
     {
-        // Implement
-    }
+        if (string.IsNullOrEmpty(searchTerm))
+        {
+            await LoadEventsAsync();
+            return;
+        }
 
-    private async Task FilterByName(string name)
-    {
-        // Implement
+        var filteredEvents = await _searchService.FilterEventsBy(filterBy, searchTerm);
+        EventItems.Clear();
+        filteredEvents.ForEach(EventItems.Add);
     }
-
-    private async Task FilterByPrice(float price)
-    {
-        // Implement
-    }
-
-    private async Task FilterByLocation(string location)
-    {
-        // Implement
-    }
-
 }

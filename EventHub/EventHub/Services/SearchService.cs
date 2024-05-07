@@ -34,4 +34,21 @@ public class SearchService : ISearchService
             throw new HttpRequestException($"Failed to retrieve events: {response.StatusCode}");
         }
     }
+
+    public async Task<List<Events>> FilterEventsBy(string filterBy, string searchTerm)
+    {
+        Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
+        var response = await _httpClient.GetAsync(uri + $"Search/filter?type={filterBy}&query={searchTerm}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var events = JsonSerializer.Deserialize<List<Events>>(content, _serializerOptions);
+            return events;
+        }
+        else
+        {
+            throw new HttpRequestException($"Failed to filter events: {response.StatusCode}");
+        }
+    }
 }
