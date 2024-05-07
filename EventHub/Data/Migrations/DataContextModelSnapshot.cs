@@ -237,6 +237,9 @@ namespace Data.Migrations
                     b.Property<float>("Rating")
                         .HasColumnType("real");
 
+                    b.Property<string>("Response")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("ReviewDate")
                         .HasColumnType("datetime2");
 

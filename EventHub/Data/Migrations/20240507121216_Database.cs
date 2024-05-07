@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Database : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -220,6 +220,7 @@ namespace Data.Migrations
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Rating = table.Column<float>(type: "real", nullable: false),
                     ReviewText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Response = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReviewDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },

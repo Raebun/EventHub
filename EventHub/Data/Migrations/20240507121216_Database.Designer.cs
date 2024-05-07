@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240505194025_Initial")]
-    partial class Initial
+    [Migration("20240507121216_Database")]
+    partial class Database
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -239,6 +239,9 @@ namespace Data.Migrations
 
                     b.Property<float>("Rating")
                         .HasColumnType("real");
+
+                    b.Property<string>("Response")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReviewDate")
                         .HasColumnType("datetime2");
