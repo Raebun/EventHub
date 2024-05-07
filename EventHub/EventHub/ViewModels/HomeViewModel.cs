@@ -16,11 +16,6 @@ public class HomeViewModel : ObservableObject
 	public ObservableCollection<Events> EventItems { get; set; } = [];
 	private string? _fullName;
 	public ICommand SelectEventCommand { get; set; }
-    public ICommand SortByPriceAscCommand { get; }
-    public ICommand SortByPriceDescCommand { get; }
-    public ICommand SortByPopularityCommand { get; }
-    public ICommand SortByDateAscCommand { get; }
-    public ICommand SortByDateDescCommand { get; }
     public ICommand FilterByDateCommand { get; }
     public ICommand FilterByNameCommand { get; }
     public ICommand FilterByPriceCommand { get; }
@@ -61,11 +56,6 @@ public class HomeViewModel : ObservableObject
 		};
 		_eventService = service;
 		SelectEventCommand = new Command<Events>(async (eventItem) => await SelectionChanged(eventItem));
-        SortByPriceAscCommand = new Command(async () => await SortByPriceAsc());
-        SortByPriceDescCommand = new Command(async () => await SortByPriceDesc());
-        SortByPopularityCommand = new Command(async () => await SortByPopularity());
-        SortByDateAscCommand = new Command(async () => await SortByDateAsc());
-        SortByDateDescCommand = new Command(async () => await SortByDateDesc());
         FilterByDateCommand = new Command<string>(async (date) => await FilterByDate(date));
         FilterByNameCommand = new Command<string>(async (name) => await FilterByName(name));
         FilterByPriceCommand = new Command<float>(async (price) => await FilterByPrice(price));
@@ -79,24 +69,25 @@ public class HomeViewModel : ObservableObject
         switch (SelectedIndex)
         {
             case 0:
-                await SortByPriceAsc();
+                await SortBy("priceasc");
                 break;
             case 1:
-                await SortByPriceDesc();
+                await SortBy("pricedesc");
                 break;
             case 2:
-                await SortByPopularity();
+                await SortBy("popular");
                 break;
             case 3:
-                await SortByDateAsc();
+                await SortBy("dateasc");
                 break;
             case 4:
-                await SortByDateDesc();
+                await SortBy("datedesc");
                 break;
             default:
                 break;
         }
     }
+
     public async Task UpdateUserInfoAsync()
 	{
 		var userInfo = await _eventService.UpdateUserInfoAsync();
@@ -124,36 +115,9 @@ public class HomeViewModel : ObservableObject
 		await Shell.Current.GoToAsync(nameof(EventDetail), navigationParameter);
 	}
 
-    private async Task SortByPriceAsc()
+    private async Task SortBy(string sortBy)
     {
-        var sortedEvents = await _searchService.SortEventsByPriceAsc();
-        EventItems.Clear();
-        sortedEvents.ForEach(EventItems.Add);
-    }
-    private async Task SortByPriceDesc()
-    {
-        var sortedEvents = await _searchService.SortEventsByPriceDesc();
-        EventItems.Clear();
-        sortedEvents.ForEach(EventItems.Add);
-    }
-
-    private async Task SortByPopularity()
-    {
-        var sortedEvents = await _searchService.SortEventsByPopularity();
-        EventItems.Clear();
-        sortedEvents.ForEach(EventItems.Add);
-    }
-
-    private async Task SortByDateAsc()
-    {
-        var sortedEvents = await _searchService.SortEventsByDateAsc();
-        EventItems.Clear();
-        sortedEvents.ForEach(EventItems.Add);
-    }
-
-    private async Task SortByDateDesc()
-    {
-        var sortedEvents = await _searchService.SortEventsByDateDesc();
+        var sortedEvents = await _searchService.SortEventsBy(sortBy);
         EventItems.Clear();
         sortedEvents.ForEach(EventItems.Add);
     }

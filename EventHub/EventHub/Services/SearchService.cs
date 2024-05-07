@@ -18,79 +18,10 @@ public class SearchService : ISearchService
             WriteIndented = true
         };
     }
-
-    public async Task<List<Events>> SortEventsByPriceAsc()
+    public async Task<List<Events>> SortEventsBy(string sortBy)
     {
         Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
-        var response = await _httpClient.GetAsync(uri + $"Search/sort?sortBy=priceasc");
-
-        if (response.IsSuccessStatusCode)
-        {
-            var content = await response.Content.ReadAsStringAsync();
-            var events = JsonSerializer.Deserialize<List<Events>>(content, _serializerOptions);
-            return events;
-        }
-        else
-        {
-            throw new HttpRequestException($"Failed to retrieve events: {response.StatusCode}");
-        }
-    }
-
-    public async Task<List<Events>> SortEventsByPriceDesc()
-    {
-        Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
-        var response = await _httpClient.GetAsync(uri + $"Search/sort?sortBy=pricedesc");
-
-        if (response.IsSuccessStatusCode)
-        {
-            var content = await response.Content.ReadAsStringAsync();
-            var events = JsonSerializer.Deserialize<List<Events>>(content, _serializerOptions);
-            return events;
-        }
-        else
-        {
-            throw new HttpRequestException($"Failed to retrieve events: {response.StatusCode}");
-        }
-    }
-
-    public async Task<List<Events>> SortEventsByPopularity()
-    {
-        Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
-        var response = await _httpClient.GetAsync(uri + $"Search/sort?sortBy=popular");
-
-        if (response.IsSuccessStatusCode)
-        {
-            var content = await response.Content.ReadAsStringAsync();
-            var events = JsonSerializer.Deserialize<List<Events>>(content, _serializerOptions);
-            return events;
-        }
-        else
-        {
-            throw new HttpRequestException($"Failed to retrieve events: {response.StatusCode}");
-        }
-    }
-
-    public async Task<List<Events>> SortEventsByDateAsc()
-    {
-        Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
-        var response = await _httpClient.GetAsync(uri + $"Search/sort?sortBy=dateasc");
-
-        if (response.IsSuccessStatusCode)
-        {
-            var content = await response.Content.ReadAsStringAsync();
-            var events = JsonSerializer.Deserialize<List<Events>>(content, _serializerOptions);
-            return events;
-        }
-        else
-        {
-            throw new HttpRequestException($"Failed to retrieve events: {response.StatusCode}");
-        }
-    }
-
-    public async Task<List<Events>> SortEventsByDateDesc()
-    {
-        Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
-        var response = await _httpClient.GetAsync(uri + $"Search/sort?sortBy=datedesc");
+        var response = await _httpClient.GetAsync(uri + $"Search/sort?sortBy={sortBy}");
 
         if (response.IsSuccessStatusCode)
         {
