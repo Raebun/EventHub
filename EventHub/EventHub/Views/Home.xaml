@@ -107,7 +107,7 @@
 				</Border>
 			</Grid>
 
-			<BoxView HeightRequest="50" BackgroundColor="Transparent" />
+			<BoxView HeightRequest="10" BackgroundColor="Transparent" />
 
 			<!-- Sorting Dropdown -->
 			<Grid>
@@ -123,12 +123,15 @@
 						<x:Array Type="{x:Type x:String}">
 							<x:String>Price Ascending</x:String>
 							<x:String>Price Descending</x:String>
+							<x:String>Popularity</x:String>
+							<x:String>Date Ascending</x:String>
+							<x:String>Date Descending</x:String>
 						</x:Array>
 					</Picker.ItemsSource>
 				</Picker>
 			</Grid>
 
-			<BoxView HeightRequest="50" BackgroundColor="Transparent" />
+			<BoxView HeightRequest="10" BackgroundColor="Transparent" />
 
 			<CollectionView x:Name="collectionView"
             ItemsSource="{Binding EventItems}"

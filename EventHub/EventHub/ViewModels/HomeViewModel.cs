@@ -84,6 +84,15 @@ public class HomeViewModel : ObservableObject
             case 1:
                 await SortByPriceDesc();
                 break;
+            case 2:
+                await SortByPopularity();
+                break;
+            case 3:
+                await SortByDateAsc();
+                break;
+            case 4:
+                await SortByDateDesc();
+                break;
             default:
                 break;
         }
@@ -130,17 +139,23 @@ public class HomeViewModel : ObservableObject
 
     private async Task SortByPopularity()
     {
-        // Implement
+        var sortedEvents = await _searchService.SortEventsByPopularity();
+        EventItems.Clear();
+        sortedEvents.ForEach(EventItems.Add);
     }
 
     private async Task SortByDateAsc()
     {
-        // Implement
+        var sortedEvents = await _searchService.SortEventsByDateAsc();
+        EventItems.Clear();
+        sortedEvents.ForEach(EventItems.Add);
     }
 
     private async Task SortByDateDesc()
     {
-        // Implement
+        var sortedEvents = await _searchService.SortEventsByDateDesc();
+        EventItems.Clear();
+        sortedEvents.ForEach(EventItems.Add);
     }
 
     private async Task FilterByDate(string date)
