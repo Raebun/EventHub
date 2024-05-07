@@ -10,4 +10,6 @@ public interface IEventService
     Task<bool> UpdateEventAsync(Events updatedEvent);
     Task<int> GetTicketsSoldForEvent(int eventId);
     Task<List<TicketModel>> GetTicketHoldersAsync(int eventId);
+    Task<List<ReviewModel>> GetEventReviewsAsync(int eventId);
+    Task<bool> SubmitReviewResponseAsync(int reviewId, ReviewCreateResponseModel responseModel);
 }

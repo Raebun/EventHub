@@ -28,6 +28,7 @@ namespace EventHub
 			builder.Services.AddSingleton<ITicketService, TicketService>();
 			builder.Services.AddSingleton<IUserService, UserService>();
 			builder.Services.AddSingleton<IFavoriteService, FavoriteService>();
+			builder.Services.AddSingleton<IReviewService, ReviewService>();
 			builder.Services.AddSingleton<MessagingService>();
 
 			// Views

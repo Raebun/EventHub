@@ -179,4 +179,55 @@ public class EventService : IEventService
             return false;
         }
     }
+
+    public async Task<List<ReviewModel>> GetEventReviewsAsync(int eventId)
+    {
+        try
+        {
+            Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
+            var response = await _httpClient.GetAsync(uri + $"Review/event/{eventId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var reviews = JsonSerializer.Deserialize<List<ReviewModel>>(content, _serializerOptions);
+                return reviews;
+            }
+            else
+            {
+                Console.WriteLine($"Failed to retrieve reviews for event {eventId}: {response.StatusCode}");
+                return null;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving reviews for event {eventId}: {ex.Message}");
+            return null;
+        }
+    }
+
+    public async Task<bool> SubmitReviewResponseAsync(int reviewId, ReviewCreateResponseModel responseModel)
+    {
+        try
+        {
+            Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
+            var response = await _httpClient.PutAsJsonAsync(uri + $"Review/{reviewId}/response", responseModel);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"Failed to submit response for review {reviewId}: {response.StatusCode}");
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error submitting response for review {reviewId}: {ex.Message}");
+            return false;
+        }
+    }
+
 }

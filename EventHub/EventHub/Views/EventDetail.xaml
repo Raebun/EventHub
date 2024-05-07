@@ -1,51 +1,100 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:models="clr-namespace:Shared.Models;assembly=Shared"
 			 xmlns:viewmodel="clr-namespace:EventHub.ViewModels"
 			 x:DataType="viewmodel:EventDetailViewModel"
              x:Class="EventHub.Views.EventDetail"
              Title="{Binding EventItem.EventName}">
 	<ContentPage.Content>
-		<StackLayout Margin="20" Spacing="10">
-			<Label Text="{Binding Path=EventItem.EventName}"
-                   FontSize="24"
-                   FontAttributes="Bold" />
-			<Label Text="{Binding Path=EventItem.Location}"
-                   FontSize="18" />
-			<Label Text="{Binding EventItem.EventDate, StringFormat='Event Date: {0:dddd, MMMM d, yyyy}'}"
-                   FontSize="16"
-                   TextColor="#666666" />
-			<Label Text="{Binding EventItem.EventDescription}"
-                   FontSize="16" />
-			<StackLayout Orientation="Horizontal" VerticalOptions="Center">
-				<Frame BackgroundColor="#007BFF" Padding="5" CornerRadius="15">
-					<Label Text="Ticket Price"
-						   TextColor="White"
-						   FontSize="16"
-						   HorizontalOptions="Center" />
-				</Frame>
-				<Label Text="{Binding EventItem.TicketPrice, StringFormat='${0:F2}'}"
-					   FontSize="18"
-					   FontAttributes="Bold"
-					   Margin="10,0,0,0"
-					   VerticalOptions="Center" />
+		<ScrollView>
+			<StackLayout Margin="20" Spacing="10">
+				<Label Text="{Binding Path=EventItem.EventName}"
+					   FontSize="24"
+					   FontAttributes="Bold" />
+				<Label Text="{Binding Path=EventItem.Location}"
+						FontSize="18" />
+				<Label Text="{Binding EventItem.EventDate, StringFormat='Event Date: {0:dddd, MMMM d, yyyy}'}"
+					   FontSize="16"
+			           TextColor="#666666" />
+				<Label Text="{Binding EventItem.EventDescription}"
+					   FontSize="16" />
+				<StackLayout Orientation="Horizontal" VerticalOptions="Center">
+					<Frame BackgroundColor="#007BFF" Padding="5" CornerRadius="15">
+						<Label Text="Ticket Price"
+							   TextColor="White"
+							   FontSize="16"
+							   HorizontalOptions="Center" />
+					</Frame>
+					<Label Text="{Binding EventItem.TicketPrice, StringFormat='${0:F2}'}"
+						   FontSize="18"
+						   FontAttributes="Bold"
+						   Margin="10,0,0,0"
+						   VerticalOptions="Center" />
+				</StackLayout>
+				<Button Text="Book Now"
+						Command="{Binding BookNowCommand}"
+						TextColor="White"
+						CornerRadius="10"
+						FontSize="18"
+						Padding="10,5"
+						HorizontalOptions="FillAndExpand" />
+				<Button Text="Add to Favorites"
+						Command="{Binding AddToFavoritesCommand}"
+						TextColor="#333"
+						Background="White"
+						BorderColor="#333"
+						CornerRadius="10"
+						FontSize="18"
+						Padding="10,5"
+						HorizontalOptions="FillAndExpand" />
+
+				<StackLayout Margin="20" Spacing="10">
+
+					<Editor x:Name="ReviewEditor"
+							Text="{Binding ReviewText}"
+							Placeholder="Write your review..." />
+					<StackLayout Orientation="Horizontal" VerticalOptions="Center">
+						<Label Text="Rating:" VerticalOptions="Center" />
+						<Slider x:Name="RatingSlider"
+								Value="{Binding Rating}"
+								Maximum="5"
+								Minimum="1"
+								HorizontalOptions="FillAndExpand"
+								VerticalOptions="CenterAndExpand" />
+						<Label Text="{Binding Rating, StringFormat='{0:F1}'}" VerticalOptions="Center" />
+					</StackLayout>
+					<Button Text="Send Review"
+							Command="{Binding SendReviewCommand}"
+							TextColor="White"
+							BackgroundColor="#007BFF"
+							CornerRadius="10"
+							FontSize="18"
+							Padding="10,5"
+							HorizontalOptions="FillAndExpand"
+							Margin="0,10,0,0" />
+				</StackLayout>
+
+				<Label Text="Reviews" FontSize="20" FontAttributes="Bold" HorizontalOptions="Start" TextColor="#333333" Margin="0,10,0,0" />
+
+				<CollectionView ItemsSource="{Binding ReviewItems}" Margin="10">
+					<CollectionView.ItemTemplate>
+						<DataTemplate x:DataType="models:ReviewModel">
+							<Frame Margin="5" Padding="10" BackgroundColor="#F8F8F8" CornerRadius="10" BorderColor="#CCCCCC" HasShadow="False">
+								<StackLayout>
+									<Label Text="{Binding ReviewText}" FontSize="16" TextColor="#333333" />
+									<!-- Check if Response is not empty or null -->
+									<StackLayout IsVisible="{Binding Response, Converter={StaticResource StringIsNotNullOrEmptyConverter}}">
+										<Frame Margin="5" Padding="10" BackgroundColor="#EDEDED" CornerRadius="5" BorderColor="#BBBBBB" HasShadow="False">
+											<Label Text="{Binding Response}" FontSize="14" TextColor="#666666" />
+										</Frame>
+									</StackLayout>
+								</StackLayout>
+							</Frame>
+						</DataTemplate>
+					</CollectionView.ItemTemplate>
+				</CollectionView>
 			</StackLayout>
-			<Button Text="Book Now"
-                    Command="{Binding BookNowCommand}"
-                    TextColor="White"
-                    CornerRadius="10"
-                    FontSize="18"
-                    Padding="10,5"
-                    HorizontalOptions="FillAndExpand" />
-			<Button Text="Add to Favorites"
-					Command="{Binding AddToFavoritesCommand}"
-					TextColor="#333"
-					Background="White"
-					BorderColor="#333"
-					CornerRadius="10"
-					FontSize="18"
-					Padding="10,5"
-					HorizontalOptions="FillAndExpand" />
-		</StackLayout>
+		</ScrollView>
 	</ContentPage.Content>
 </ContentPage>
