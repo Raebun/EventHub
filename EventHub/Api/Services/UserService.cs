@@ -55,5 +55,16 @@ namespace Api.Services
 
 			await _context.SaveChangesAsync();
 		}
-	}
+
+        public async Task UpdateProfilePictureAsync(string userId, ProfilePictureUpdate profilePictureUpdate)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                throw new ArgumentException("User not found.");
+
+            user.ProfilePicture = profilePictureUpdate.ProfilePictureUrl;
+
+            await _context.SaveChangesAsync();
+        }
+    }
 }

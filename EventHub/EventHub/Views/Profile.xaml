@@ -6,43 +6,68 @@
              xmlns:models="clr-namespace:EventHub.Models"
              x:DataType="viewmodel:UserViewModel"
              Title="Edit Profile">
-	<VerticalStackLayout Spacing="20">
-		<StackLayout>
-			<Label Text="First Name:" VerticalOptions="Center" />
-			<Border 
-				StrokeThickness="0"
-				BackgroundColor="White"
-				StrokeShape="RoundRectangle 10,10,10,10">
-				<Entry Placeholder="First Name" Text="{Binding UpdateUser.Firstname, Mode=TwoWay}" />
-			</Border>
-		</StackLayout>
-		<StackLayout>
-			<Label Text="Last Name:" VerticalOptions="Center" />
-			<Border 
-				StrokeThickness="0"
-				BackgroundColor="White"
-				StrokeShape="RoundRectangle 10,10,10,10">
+	<ScrollView>
+		<VerticalStackLayout Spacing="20">
+			<StackLayout>
+				<Image Source="{Binding ProfilePictureUrl}" 
+               WidthRequest="100" 
+               HeightRequest="100" />
+				<!-- Other UI elements -->
+			</StackLayout>
+			
+			<!-- Camera functionality -->
+			<StackLayout>
+				<Image x:Name="ProfileImage" 
+                   Source="{Binding ProfileImagePath}" 
+                   WidthRequest="200" 
+                   HeightRequest="200" 
+                   Aspect="AspectFill" />
+				<HorizontalStackLayout>
+					<Button Text="Take Profile Picture" Command="{Binding TakePhotoCommand}" />
+					<Button Text="Upload Profile Picture" Command="{Binding UploadPhotoCommand}" />
+				</HorizontalStackLayout>
+				<Button Text="Save Profile Picture" Command="{Binding SaveProfilePictureCommand}" />
+			</StackLayout>
+
+
+			<StackLayout>
+				<Label Text="First Name:" VerticalOptions="Center" />
+				<Border 
+			StrokeThickness="0"
+			BackgroundColor="White"
+			StrokeShape="RoundRectangle 10,10,10,10">
+					<Entry Placeholder="First Name" Text="{Binding UpdateUser.Firstname, Mode=TwoWay}" />
+				</Border>
+			</StackLayout>
+			<StackLayout>
+				<Label Text="Last Name:" VerticalOptions="Center" />
+				<Border 
+			StrokeThickness="0"
+			BackgroundColor="White"
+			StrokeShape="RoundRectangle 10,10,10,10">
 					<Entry Placeholder="Last Name" Text="{Binding UpdateUser.Lastname, Mode=TwoWay}" />
-			</Border>
-		</StackLayout>
-		<StackLayout>
-			<Label Text="Email:" VerticalOptions="Center" />
-			<Border 
-				StrokeThickness="0"
-				BackgroundColor="White"
-				StrokeShape="RoundRectangle 10,10,10,10">
-				<Entry Placeholder="Email" Text="{Binding UpdateUser.Email, Mode=TwoWay}" />
-			</Border>
-		</StackLayout>
-		<StackLayout>
-			<Label Text="Password:" VerticalOptions="Center" />
-			<Border 
-				StrokeThickness="0"
-				BackgroundColor="White"
-				StrokeShape="RoundRectangle 10,10,10,10">
-				<Entry Placeholder="Password" Text="{Binding UpdateUser.Password, Mode=TwoWay}" IsPassword="True" />
-			</Border>
-		</StackLayout>
-		<Button Text="Save Changes" Command="{Binding SaveChangesCommand}" />
-	</VerticalStackLayout>
+				</Border>
+			</StackLayout>
+			<StackLayout>
+				<Label Text="Email:" VerticalOptions="Center" />
+				<Border 
+			StrokeThickness="0"
+			BackgroundColor="White"
+			StrokeShape="RoundRectangle 10,10,10,10">
+					<Entry Placeholder="Email" Text="{Binding UpdateUser.Email, Mode=TwoWay}" />
+				</Border>
+			</StackLayout>
+			<StackLayout>
+				<Label Text="Password:" VerticalOptions="Center" />
+				<Border 
+			StrokeThickness="0"
+			BackgroundColor="White"
+			StrokeShape="RoundRectangle 10,10,10,10">
+					<Entry Placeholder="Password" Text="{Binding UpdateUser.Password, Mode=TwoWay}" IsPassword="True" />
+				</Border>
+			</StackLayout>
+			<Button Text="Save Changes" Command="{Binding SaveChangesCommand}" />
+		</VerticalStackLayout>
+	</ScrollView>
+	
 </ContentPage>

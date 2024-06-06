@@ -21,5 +21,6 @@ namespace Api.Services.Interfaces
 		/// <returns>The user object if found, otherwise null.</returns>
 		Task<User> GetUserByIdAsync(string id);
 		Task UpdateUserAsync(string id, UserUpdate updatedUser);
-	}
+        Task UpdateProfilePictureAsync(string userId, ProfilePictureUpdate profilePictureUpdate);
+    }
 }

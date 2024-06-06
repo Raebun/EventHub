@@ -81,5 +81,19 @@ namespace Api.Controllers
 				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
 		}
-	}
+
+        [HttpPost("{id}/profile-picture")]
+        public async Task<IActionResult> UpdateProfilePicture(string id, [FromBody] ProfilePictureUpdate profilePictureUpdate)
+        {
+            try
+            {
+                await _userService.UpdateProfilePictureAsync(id, profilePictureUpdate);
+                return Ok("Profile picture updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+    }
 }
