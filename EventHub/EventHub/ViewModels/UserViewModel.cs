@@ -1,8 +1,6 @@
 ﻿using EventHub.Services;
 using EventHub.Services.Interfaces;
-using Shared.Entities;
 using Shared.Models;
-using SkiaSharp;
 using System.Windows.Input;
 
 namespace EventHub.ViewModels;

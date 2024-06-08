@@ -85,7 +85,7 @@ public class HomeViewModel : ObservableObject
 		_ = UpdateUserInfoAsync();
 	}
 
-    private async Task ApplyFilter()
+    public async Task ApplyFilter()
     {
         string filter = GetFilterByIndex(SelectedFilterIndex);
         await FilterBy(filter, SearchTerm);
@@ -103,7 +103,7 @@ public class HomeViewModel : ObservableObject
         }
     }
 
-    private async Task SortBySelectedIndex()
+    public async Task SortBySelectedIndex()
     {
         switch (SelectedIndex)
         {
