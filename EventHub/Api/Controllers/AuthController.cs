@@ -4,7 +4,7 @@ using Shared.Models;
 
 namespace Api.Controllers
 {
-	[Route("[controller]")]
+    [Route("[controller]")]
 	[ApiController]
 	public class AuthController : ControllerBase
 	{

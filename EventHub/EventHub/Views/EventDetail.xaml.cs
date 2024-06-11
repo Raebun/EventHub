@@ -10,5 +10,12 @@ public partial class EventDetail : ContentPage
 	{
 		InitializeComponent();
 		BindingContext = viewModel;
-	}
+        viewModel.AnimateAddToFavoritesButton += async () => await AnimateAddToFavoritesButton();
+    }
+
+    private async Task AnimateAddToFavoritesButton()
+    {
+        await AddToFavoritesButton.ScaleTo(1.1, 100);
+        await AddToFavoritesButton.ScaleTo(1, 100);
+    }
 }

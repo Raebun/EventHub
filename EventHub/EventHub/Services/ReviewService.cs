@@ -1,5 +1,6 @@
 ﻿using EventHub.Services.Interfaces;
 using Shared.Models;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
@@ -25,6 +26,8 @@ public class ReviewService : IReviewService
     {
         ReviewItems = [];
 
+        string authToken = await SecureStorage.GetAsync("auth_token");
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
         Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
         try
         {
@@ -52,6 +55,8 @@ public class ReviewService : IReviewService
     {
         try
         {
+            string authToken = await SecureStorage.GetAsync("auth_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
             Uri uri = new Uri(string.Format(Constants.RestUrl, string.Empty));
             string userId = await SecureStorage.GetAsync("user_id");
 

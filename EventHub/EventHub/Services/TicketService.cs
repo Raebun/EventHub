@@ -1,5 +1,6 @@
 ﻿using EventHub.Models;
 using EventHub.Services.Interfaces;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace EventHub.Services;
@@ -25,7 +26,9 @@ public class TicketService : ITicketService
 	{
 		TicketItems = [];
 
-		Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
+        string authToken = await SecureStorage.GetAsync("auth_token");
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
+        Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
 		try
 		{
 			var response = await _httpClient.GetAsync(uri + $"Ticket/user/{userId}");

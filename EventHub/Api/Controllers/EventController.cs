@@ -1,11 +1,12 @@
 ﻿using Api.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Entities;
 using Shared.Models;
 
 namespace Api.Controllers
 {
-	[Route("[controller]")]
+    [Route("[controller]")]
 	[ApiController]
 	public class EventController : Controller
 	{
@@ -48,7 +49,8 @@ namespace Api.Controllers
 		/// <param name="model">The event creation model.</param>
 		/// <returns>The newly created event.</returns>
 		[HttpPost]
-		public async Task<ActionResult<Event>> CreateEvent(EventCreateModel model)
+        [Authorize]
+        public async Task<ActionResult<Event>> CreateEvent(EventCreateModel model)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState);
@@ -64,7 +66,8 @@ namespace Api.Controllers
 		/// <param name="model">The event update model.</param>
 		/// <returns>The updated event if successful, otherwise returns NotFoundResult.</returns>
 		[HttpPut("{id}")]
-		public async Task<IActionResult> UpdateEvent(int id, EventUpdateModel model)
+        [Authorize]
+        public async Task<IActionResult> UpdateEvent(int id, EventUpdateModel model)
 		{
 			var updatedEvent = await _eventService.UpdateEventAsync(id, model);
 
@@ -80,7 +83,8 @@ namespace Api.Controllers
 		/// <param name="id">The ID of the event to delete.</param>
 		/// <returns>Returns a message indicating the status of the deletion.</returns>
 		[HttpDelete("{id}")]
-		public async Task<IActionResult> DeleteEvent(int id)
+        [Authorize]
+        public async Task<IActionResult> DeleteEvent(int id)
 		{
 			var eventExists = await _eventService.EventExistsAsync(id);
 			if (!eventExists)
@@ -105,6 +109,7 @@ namespace Api.Controllers
         /// <param name="userId">The ID of the user.</param>
         /// <returns>The list of events associated with the user.</returns>
         [HttpGet("user/{userId}")]
+        [Authorize]
         public async Task<ActionResult<List<Event>>> GetEventsByUserId(Guid userId)
         {
             var events = await _eventService.GetEventsByUserIdAsync(userId);

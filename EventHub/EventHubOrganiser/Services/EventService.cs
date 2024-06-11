@@ -1,6 +1,7 @@
 ﻿using EventHubOrganiser.Services.Interfaces;
 using Microsoft.JSInterop;
 using Shared.Models;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace EventHubOrganiser.Services;
@@ -28,6 +29,9 @@ public class EventService : IEventService
         Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
         try
         {
+            var authToken = await _js.InvokeAsync<string>("localStorage.getItem", "auth_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
+
             var userId = await _js.InvokeAsync<string>("localStorage.getItem", "user_id");
             var response = await _httpClient.GetAsync(uri + $"Event/user/{userId}");
 
@@ -59,6 +63,8 @@ public class EventService : IEventService
         try
         {
             Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
+            var authToken = await _js.InvokeAsync<string>("localStorage.getItem", "auth_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
             var response = await _httpClient.GetAsync(uri + $"Ticket/event/{eventId}");
 
             if (response.IsSuccessStatusCode)
@@ -87,6 +93,8 @@ public class EventService : IEventService
         try
         {
             Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
+            var authToken = await _js.InvokeAsync<string>("localStorage.getItem", "auth_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
             var response = await _httpClient.GetAsync(uri + $"Ticket/event/{eventId}");
 
             if (response.IsSuccessStatusCode)
@@ -113,6 +121,8 @@ public class EventService : IEventService
         Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
         try
         {
+            var authToken = await _js.InvokeAsync<string>("localStorage.getItem", "auth_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
             var response = await _httpClient.DeleteAsync(uri + $"Event/{eventId}");
 
             if (response.IsSuccessStatusCode)
@@ -137,6 +147,8 @@ public class EventService : IEventService
         Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
         try
         {
+            var authToken = await _js.InvokeAsync<string>("localStorage.getItem", "auth_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
             var response = await _httpClient.PostAsJsonAsync(uri + "Event", newEvent);
 
             if (response.IsSuccessStatusCode)
@@ -161,6 +173,8 @@ public class EventService : IEventService
         Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
         try
         {
+            var authToken = await _js.InvokeAsync<string>("localStorage.getItem", "auth_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
             var response = await _httpClient.PutAsJsonAsync(uri + $"Event/{updatedEvent.EventId}", updatedEvent);
 
             if (response.IsSuccessStatusCode)
@@ -185,6 +199,8 @@ public class EventService : IEventService
         try
         {
             Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
+            var authToken = await _js.InvokeAsync<string>("localStorage.getItem", "auth_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
             var response = await _httpClient.GetAsync(uri + $"Review/event/{eventId}");
 
             if (response.IsSuccessStatusCode)
@@ -211,6 +227,8 @@ public class EventService : IEventService
         try
         {
             Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
+            var authToken = await _js.InvokeAsync<string>("localStorage.getItem", "auth_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
             var response = await _httpClient.PutAsJsonAsync(uri + $"Review/{reviewId}/response", responseModel);
 
             if (response.IsSuccessStatusCode)

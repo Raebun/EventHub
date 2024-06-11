@@ -1,5 +1,6 @@
 ﻿using EventHub.Models;
 using EventHub.Services.Interfaces;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
@@ -26,7 +27,7 @@ public class FavoriteService : IFavoriteService
 	{
 		try
 		{
-			Uri uri = new Uri(string.Format(Constants.RestUrl, string.Empty));
+            Uri uri = new Uri(string.Format(Constants.RestUrl, string.Empty));
 
 			var addToFavorites = new
 			{
@@ -34,7 +35,9 @@ public class FavoriteService : IFavoriteService
 				eventId
 			};
 
-			var json = JsonSerializer.Serialize(addToFavorites);
+            string authToken = await SecureStorage.GetAsync("auth_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
+            var json = JsonSerializer.Serialize(addToFavorites);
 			var content = new StringContent(json, Encoding.UTF8, "application/json");
 			var response = await _httpClient.PostAsync(uri + "Favorite", content);
 
@@ -61,7 +64,9 @@ public class FavoriteService : IFavoriteService
 
 		try
 		{
-			Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
+            string authToken = await SecureStorage.GetAsync("auth_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
+            Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
 			var response = await _httpClient.GetAsync(uri + $"Favorite/{userId}");
 
 			if (response.IsSuccessStatusCode)
@@ -86,7 +91,9 @@ public class FavoriteService : IFavoriteService
 	{
 		try
 		{
-			Uri uri = new Uri(string.Format(Constants.RestUrl, string.Empty));
+			string authToken = await SecureStorage.GetAsync("auth_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
+            Uri uri = new Uri(string.Format(Constants.RestUrl, string.Empty));
 
 			var deleteFavorite = new
 			{

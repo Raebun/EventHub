@@ -25,8 +25,7 @@ namespace EventHub.Services
 		{
 			EventItems = [];
 
-
-			Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
+            Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
 			try
 			{
 				var response = await _httpClient.GetAsync(uri + "Event");

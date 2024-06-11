@@ -15,6 +15,7 @@ public class EventDetailViewModel : BaseViewModel
     private readonly IFavoriteService _favoriteService;
 	private Events _eventItem;
     public ObservableCollection<Shared.Models.ReviewModel> ReviewItems { get; set; } = [];
+    public event Action AnimateAddToFavoritesButton;
 
     public ICommand BookNowCommand { get; private set; }
 	public ICommand AddToFavoritesCommand { get; private set; }
@@ -83,7 +84,8 @@ public class EventDetailViewModel : BaseViewModel
 
 	private async Task AddToFavorites(Events eventItem)
 	{
-		try
+        AnimateAddToFavoritesButton?.Invoke();
+        try
 		{
 			string userId = await SecureStorage.GetAsync("user_id");
 			bool addToFavoritesSuccessful = await _favoriteService.AddToFavoritesAsync(userId, eventItem.EventId);

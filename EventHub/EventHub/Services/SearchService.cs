@@ -1,6 +1,7 @@
 ﻿using EventHub.Services.Interfaces;
 using System.Text.Json;
 using EventHub.Models;
+using System.Net.Http.Headers;
 
 namespace EventHub.Services;
 
@@ -20,6 +21,8 @@ public class SearchService : ISearchService
     }
     public async Task<List<Events>> SortEventsBy(string sortBy)
     {
+        string authToken = await SecureStorage.GetAsync("auth_token");
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
         Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
         var response = await _httpClient.GetAsync(uri + $"Search/sort?sortBy={sortBy}");
 
@@ -37,6 +40,8 @@ public class SearchService : ISearchService
 
     public async Task<List<Events>> FilterEventsBy(string filterBy, string searchTerm)
     {
+        string authToken = await SecureStorage.GetAsync("auth_token");
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
         Uri uri = new(string.Format(Constants.RestUrl, string.Empty));
         var response = await _httpClient.GetAsync(uri + $"Search/filter?type={filterBy}&query={searchTerm}");
 

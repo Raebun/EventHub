@@ -39,7 +39,8 @@
 						FontSize="18"
 						Padding="10,5"
 						HorizontalOptions="FillAndExpand" />
-				<Button Text="Add to Favorites"
+				<Button x:Name="AddToFavoritesButton"
+						Text="Add to Favorites"
 						Command="{Binding AddToFavoritesCommand}"
 						TextColor="#333"
 						Background="White"
