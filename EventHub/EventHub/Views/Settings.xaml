@@ -12,7 +12,6 @@
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
-			<!-- Added a new row for the profile information -->
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" />
@@ -68,7 +67,6 @@
 			Grid.Row="5"
 			Grid.ColumnSpan="2"
 			Margin="10,50,10,10"
-			Command="{Binding LogoutCommand}"
-			CommandParameter="{Binding Source={x:Reference Page}}"/>
+			Command="{Binding LogoutCommand}"/>
 	</Grid>
 </ContentPage>
