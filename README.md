@@ -63,19 +63,25 @@ IDE:
 
 ## Project Information
 **Api**
+
 The Api project contains an ASP.NET Core WebApi. It serves as the backend for the EventHub application, handling all HTTP requests and providing data to the front-end applications. It includes controllers and services to manage events, users, and other core functionalities.
 
 **Data**
+
 The Data project is a C# Library Class and includes only the migrations and data context for the database. It is set up using Entity Framework with a code-first approach.
 
 **Shared**
+
 The Shared project is a C# Library Class that contains shared models and entities used across multiple projects within the solution. These entities are essential for Entity Framework operations, and the shared models promote code reuse and consistency across the application.
 
 **Webclient (Main App)**
+
 The Webclient (Main App) project is the primary front-end application for EventHub, targeting Android and Windows platforms. It is built using .NET Multi-platform App UI (MAUI) and provides the main user interface for end-users to interact with the system. This app includes features for browsing events, user registration, and other core functionalities.
 
 **Webclient (Organizer App)**
+
 The Webclient (Organizer App) project is a Blazor application designed for event organizers. It provides tools and interfaces for organizers to create, manage, and track events.
 
 **Unit Tests**
+
 The Unit Tests project contains automated tests for the solution, focusing primarily on viewmodel tests from the main app. These tests ensure the correctness of the code and help maintain the reliability and stability of the application.
