@@ -11,7 +11,7 @@ Key functionalities include:
 -	Organizational features: Organizers can add, edit, and delete events.
 -	Favorites: Users can save favorite events for easy access and follow-up.
 -	Reviews and ratings: Users can leave reviews and ratings for events they have attended.
--	
+  
 The design of the app will ensure that these functionalities are accessible to both users and organizers. This includes a clear user interface, easy navigation, and clear action buttons. The backend will be designed to store and process the required data, such as user information, event details, ticket sales, and reviews. Attention will also be paid to authentication to ensure a smooth user experience.
 
 
