@@ -17,12 +17,12 @@ The design of the app will ensure that these functionalities are accessible to b
 
 This repository contains the following projects:
 
-- [Api](#api)
-- [Data](#data)
-- [Shared](#shared)
-- [Webclient (Main App)](#Webclient (Main App))
-- [Webclient (Organizer App)](#Webclient (Organizer App))
-- [Unit Tests](#Unit Tests)
+- Api
+- Data
+- Shared
+- Webclient (Main App)
+- Webclient (Organizer App)
+- Unit Tests
 
 ## Table of Contents
 - [Getting Started](#getting-started)
