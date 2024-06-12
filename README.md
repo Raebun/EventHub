@@ -37,19 +37,23 @@ To get started with this project, follow these steps:
    git clone https://github.com/Raebun/EventHub.git
    ```
 **2. For Visual Studio Users**
+
 Make sure your VS is up-to-date and have these workloads installed in the installer:
 - ASP.NET and web development
 - .NET Multi-platform App UI development
 - .NET desktop development
 
 **3. Emulator**
+
 Make sure you have a working emulator on your IDE.
 
 **4. Environment SQL Infrastructure**
+
 Make sure you have an environment ready to manage SQL in. 
 An example of this: SQL Server Management Studio (SSMS).
 
 **5. Get Database**
+
 IDE:
 1. Make sure there are no errors in your repository.
 2. Make sure package are up-to-date of the Entity Framework.
