@@ -18,8 +18,11 @@ The design of the app will ensure that these functionalities are accessible to b
 This repository contains the following projects:
 
 - [Api](#api)
+- [Data](#data)
 - [Shared](#shared)
-- [WebClient](#webclient)
+- [Webclient (Main App)](#Webclient (Main App))
+- [Webclient (Organizer App)](#Webclient (Organizer App))
+- [Unit Tests](#Unit Tests)
 
 ## Table of Contents
 - [Getting Started](#getting-started)
@@ -29,17 +32,46 @@ This repository contains the following projects:
 
 To get started with this project, follow these steps:
 
-**Clone the repository**: 
+**1. Clone the repository**: 
    ```bash
    git clone https://github.com/Raebun/EventHub.git
    ```
+**2. For Visual Studio Users**
+Make sure your VS is up-to-date and have these workloads installed in the installer:
+- ASP.NET and web development
+- .NET Multi-platform App UI development
+- .NET desktop development
+
+**3. Emulator**
+Make sure you have a working emulator on your IDE.
+
+**4. Environment SQL Infrastructure**
+Make sure you have an environment ready to manage SQL in. 
+An example of this: SQL Server Management Studio (SSMS).
+
+**5. Get Database**
+IDE:
+1. Make sure there are no errors in your repository.
+2. Make sure package are up-to-date of the Entity Framework.
+3. Open the Package Manager Console (PMC).
+4. Put API as startup project.
+5. In the PMC, select Data as the default project.
 
 ## Project Information
 **Api**
-The Api project contains an ASP.NET Core WebApi.
+The Api project contains an ASP.NET Core WebApi. It serves as the backend for the EventHub application, handling all HTTP requests and providing data to the front-end applications. It includes controllers and services to manage events, users, and other core functionalities.
+
+**Data**
+The Data project is a C# Library Class and includes only the migrations and data context for the database. It is set up using Entity Framework with a code-first approach.
 
 **Shared**
-The Shared project is a C# Library Class.
+The Shared project is a C# Library Class that contains shared models and entities used across multiple projects within the solution. These entities are essential for Entity Framework operations, and the shared models promote code reuse and consistency across the application.
 
-**WebClient**
-The WebClient project is still under development. It will utilize MAUI at least.
+**Webclient (Main App)**
+The Webclient (Main App) project is the primary front-end application for EventHub, targeting Android and Windows platforms. It is built using .NET Multi-platform App UI (MAUI) and provides the main user interface for end-users to interact with the system. This app includes features for browsing events, user registration, and other core functionalities.
+
+**Webclient (Organizer App)**
+The Webclient (Organizer App) project is a Blazor application designed for event organizers. It provides tools and interfaces for organizers to create, manage, and track events.
+
+**Unit Tests**
+The Unit Tests project contains automated tests for the solution, focusing primarily on viewmodel tests from the main app. These tests ensure the correctness of the code and help maintain the reliability and stability of the application.
