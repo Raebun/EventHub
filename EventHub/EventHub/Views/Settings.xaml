@@ -50,7 +50,11 @@
 			</Grid.ColumnDefinitions>
 
 			<!-- Label for Profile Information -->
-			<Label Grid.Column="0" Text="Profile Information" VerticalOptions="Center"/>
+			<Label Grid.Column="0" Text="Profile Information" VerticalOptions="Center">
+				<Label.GestureRecognizers>
+					<TapGestureRecognizer Command="{Binding NavigateToProfileCommand}"/>
+				</Label.GestureRecognizers>
+			</Label>
 
 			<!-- Arrow indicating clickability -->
 			<Image Grid.Column="1" Source="chevron_right_solid.svg" WidthRequest="10" HorizontalOptions="End" VerticalOptions="Center">
